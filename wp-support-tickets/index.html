@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="WP Support Ticket System — A complete WordPress helpdesk with AJAX ticket submission, SLA deadlines, Slack notifications, Support Agent role, and REST API.">
+<meta name="keywords" content="WordPress support ticket plugin, helpdesk plugin, customer support WordPress, ticket system plugin, WP support agent">
+<meta name="author" content="Vetri Suriya">
+<meta property="og:title" content="WP Support Ticket System — WordPress Plugin by Vetri Suriya">
+<meta property="og:type" content="website">
+<title>WP Support Ticket System — WordPress Plugin | Vetri Suriya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;500;600;700&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #f4f6f9;
+    --white:    #ffffff;
+    --ink:      #0f1923;
+    --ink-60:   #4a5568;
+    --steel:    #1e3a5f;
+    --steel-m:  #2d5282;
+    --orange:   #f06623;
+    --orange-l: #fff3ed;
+    --border:   #d1dce8;
+    --card:     #ffffff;
+    --success:  #0d7a4a;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--ink); font-family: 'IBM Plex Sans', sans-serif; font-size: 1rem; line-height: 1.7; }
+
+  /* ── NAV ── */
+  nav { background: var(--steel); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .nav-brand { font-family: 'IBM Plex Serif', serif; color: #fff; font-weight: 700; font-size: 1.0625rem; text-decoration: none; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: rgba(255,255,255,.65); font-size: .875rem; font-weight: 500; text-decoration: none; transition: color .2s; }
+  .nav-links a:hover { color: var(--orange); }
+
+  /* ── HERO ── */
+  header { background: var(--steel); color: #fff; padding: 7rem 2rem 5rem; position: relative; overflow: hidden; }
+  header::after { content: ''; position: absolute; right: 0; top: 0; width: 45%; height: 100%; background: linear-gradient(135deg, transparent 40%, rgba(240,102,35,.15) 100%); pointer-events: none; }
+  .hero-inner { max-width: 860px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero-badge { display: inline-flex; align-items: center; gap: .5rem; background: var(--orange); color: #fff; font-family: 'IBM Plex Sans', sans-serif; font-weight: 600; font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; padding: .35rem 1rem; margin-bottom: 1.5rem; border-radius: 2px; }
+  h1 { font-family: 'IBM Plex Serif', serif; font-size: clamp(2.25rem, 6vw, 4.5rem); font-weight: 700; line-height: 1.1; margin-bottom: 1.25rem; }
+  h1 em { font-style: normal; color: var(--orange); }
+  .hero-desc { font-size: 1.125rem; font-weight: 300; opacity: .8; max-width: 600px; margin-bottom: 2.5rem; }
+  .btn-row { display: flex; flex-wrap: wrap; gap: 1rem; }
+  .btn { display: inline-flex; align-items: center; gap: .5rem; padding: .875rem 1.875rem; font-family: 'IBM Plex Sans', sans-serif; font-weight: 600; font-size: .9375rem; text-decoration: none; border-radius: 3px; transition: all .2s; cursor: pointer; border: none; }
+  .btn-primary { background: var(--orange); color: #fff; }
+  .btn-primary:hover { background: #d95a1a; transform: translateY(-1px); }
+  .btn-outline { background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,.35); }
+  .btn-outline:hover { border-color: var(--orange); color: var(--orange); }
+  .btn-soft { background: rgba(255,255,255,.1); color: rgba(255,255,255,.75); }
+  .btn-soft:hover { background: rgba(255,255,255,.18); color: #fff; }
+
+  /* ── SECTION BASE ── */
+  section { padding: 5rem 2rem; }
+  .container { max-width: 900px; margin: 0 auto; }
+  .eyebrow { font-family: 'IBM Plex Sans', sans-serif; font-size: .75rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--orange); margin-bottom: .625rem; }
+  h2 { font-family: 'IBM Plex Serif', serif; font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight: 700; color: var(--ink); margin-bottom: 1rem; line-height: 1.2; }
+  h3 { font-family: 'IBM Plex Serif', serif; font-size: 1.1875rem; font-weight: 600; color: var(--steel); margin-bottom: .5rem; }
+  p { color: var(--ink-60); margin-bottom: 1rem; }
+
+  /* ── INSTALL STEPS ── */
+  .install-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1px; background: var(--border); margin-top: 2rem; border-radius: 6px; overflow: hidden; }
+  .install-step { background: var(--white); padding: 1.75rem 1.5rem; }
+  .step-n { display: inline-block; width: 36px; height: 36px; background: var(--orange); color: #fff; font-weight: 700; font-size: .9375rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin-bottom: 1rem; }
+  .install-step h3 { font-size: 1rem; color: var(--ink); margin-bottom: .375rem; }
+  .install-step p { font-size: .9rem; margin: 0; }
+
+  /* ── FEATURES GRID ── */
+  .feat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.25rem; margin-top: 2rem; }
+  .feat-card { background: var(--white); border: 1px solid var(--border); border-radius: 6px; padding: 1.5rem; }
+  .feat-icon { font-size: 1.375rem; margin-bottom: .75rem; }
+  .feat-card h3 { color: var(--ink); font-size: .975rem; margin-bottom: .375rem; }
+  .feat-card p { font-size: .875rem; margin: 0; }
+
+  /* ── STATUS BADGES (demo) ── */
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+  .badge-open { background: #fee2e2; color: #991b1b; }
+  .badge-progress { background: #fef3c7; color: #92400e; }
+  .badge-resolved { background: #d1fae5; color: #065f46; }
+  .badge-closed { background: #e2e8f0; color: #475569; }
+  .badge-row { display: flex; gap: .5rem; flex-wrap: wrap; margin: .75rem 0; }
+
+  /* ── CODE ── */
+  .code-box { background: var(--steel); color: #d4e6ff; border-radius: 6px; padding: 1.25rem 1.5rem; font-family: 'IBM Plex Mono', 'Courier New', monospace; font-size: .875rem; line-height: 1.65; margin: 1rem 0; overflow-x: auto; }
+  .code-box .hl { color: var(--orange); }
+  code { background: var(--orange-l); color: var(--orange); border: 1px solid #fbd2b8; padding: 1px 6px; border-radius: 3px; font-size: .8125rem; }
+
+  /* ── TABLE ── */
+  table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; background: var(--white); border-radius: 6px; overflow: hidden; border: 1px solid var(--border); font-size: .9rem; }
+  thead { background: var(--steel); color: #fff; }
+  th { padding: .75rem 1rem; text-align: left; font-family: 'IBM Plex Sans', sans-serif; font-weight: 600; font-size: .8125rem; letter-spacing: .04em; text-transform: uppercase; }
+  td { padding: .75rem 1rem; border-bottom: 1px solid var(--border); color: var(--ink-60); vertical-align: top; }
+
+  /* ── AUTHOR ── */
+  .author-section { background: var(--steel); color: #fff; }
+  .author-section .eyebrow { color: var(--orange); }
+  .author-section h2 { color: #fff; }
+  .author-section p { color: rgba(255,255,255,.65); }
+  .author-layout { display: grid; grid-template-columns: auto 1fr; gap: 2.5rem; align-items: start; }
+  .avatar { width: 90px; height: 90px; border-radius: 50%; background: var(--orange); display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Serif', serif; font-size: 2rem; font-weight: 700; color: #fff; flex-shrink: 0; }
+  .s-links { display: flex; flex-wrap: wrap; gap: .625rem; margin-top: 1.25rem; }
+  .s-link { display: inline-flex; align-items: center; gap: .4rem; padding: .5rem 1.125rem; background: rgba(255,255,255,.1); color: rgba(255,255,255,.85); text-decoration: none; font-size: .875rem; border-radius: 3px; border: 1px solid rgba(255,255,255,.15); transition: all .2s; }
+  .s-link:hover { background: var(--orange); color: #fff; border-color: var(--orange); }
+
+  /* ── FOOTER ── */
+  footer { background: #0b1728; color: rgba(255,255,255,.45); padding: 2.5rem 2rem; text-align: center; }
+  .ft-brand { font-family: 'IBM Plex Serif', serif; font-weight: 700; font-size: 1.0625rem; color: rgba(255,255,255,.8); margin-bottom: .5rem; }
+  footer a { color: var(--orange); text-decoration: none; }
+
+  @media (max-width:640px) { .author-layout { grid-template-columns: 1fr; } .nav-links { display: none; } }
+</style>
+</head>
+<body>
+
+<nav aria-label="Site navigation">
+  <a href="#" class="nav-brand">WP Support Ticket System</a>
+  <ul class="nav-links">
+    <li><a href="#install">Install</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#shortcodes">Shortcodes</a></li>
+    <li><a href="#author">Author</a></li>
+  </ul>
+</nav>
+
+<header role="banner">
+  <div class="hero-inner">
+    <div class="hero-badge">🎟 WordPress Plugin · v1.0.0 · GPL v2</div>
+    <h1>WP Support<br><em>Ticket System</em></h1>
+    <p class="hero-desc">A full helpdesk inside WordPress. AJAX ticket submission for guests and logged-in users, agent roles, SLA deadlines, Slack webhooks, private notes, and a REST API — no third-party platform required.</p>
+    <div class="btn-row">
+      <a href="wp-support-tickets.zip" class="btn btn-primary" download>⬇ Download ZIP</a>
+      <a href="#author" class="btn btn-outline">👤 Author Profile</a>
+      <a href="https://vetrisuriya.in/" class="btn btn-soft">🗂 View Portfolio</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="install" aria-labelledby="install-h">
+    <div class="container">
+      <div class="eyebrow">Setup Guide</div>
+      <h2 id="install-h">Installation &amp; Activation</h2>
+      <p>The plugin activates in seconds. On first load it creates the replies database table and registers the Support Agent role automatically.</p>
+      <div class="install-grid">
+        <div class="install-step">
+          <div class="step-n">1</div>
+          <h3>Upload Plugin</h3>
+          <p>Go to <strong>Plugins → Add New → Upload Plugin</strong>, select <code>wp-support-tickets.zip</code> and click Install Now.</p>
+        </div>
+        <div class="install-step">
+          <div class="step-n">2</div>
+          <h3>Activate</h3>
+          <p>Click <strong>Activate Plugin</strong>. Creates <code>wp_wsts_replies</code> table and registers the <em>Support Agent</em> role.</p>
+        </div>
+        <div class="install-step">
+          <div class="step-n">3</div>
+          <h3>Configure</h3>
+          <p>Go to <strong>Support → Settings</strong>. Set Agent Email, Slack Webhook URL, and SLA hours per priority.</p>
+        </div>
+        <div class="install-step">
+          <div class="step-n">4</div>
+          <h3>Add Shortcodes</h3>
+          <p>Add <code>[support_ticket_form]</code> to your support page and <code>[my_tickets]</code> to a customer account page.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" style="background:var(--white)" aria-labelledby="features-h">
+    <div class="container">
+      <div class="eyebrow">What's Included</div>
+      <h2 id="features-h">Core Features</h2>
+      <p>Everything you need to run a helpdesk — built entirely on WordPress APIs.</p>
+      <div class="feat-grid">
+        <div class="feat-card"><div class="feat-icon">🎫</div><h3>Custom Post Statuses</h3><p>Four ticket statuses: Open → In Progress → Resolved → Closed. Each registered with WordPress <code>register_post_status()</code>.</p></div>
+        <div class="feat-card"><div class="feat-icon">⏱</div><h3>SLA Deadlines</h3><p>Auto-calculated on submission: Critical 2h, High 8h, Normal 24h. Overdue tickets turn red in the admin list.</p></div>
+        <div class="feat-card"><div class="feat-icon">🔔</div><h3>Slack Notifications</h3><p>Rich webhook payloads with priority emoji, subject, customer email, and a direct "View Ticket" button.</p></div>
+        <div class="feat-card"><div class="feat-icon">🕵</div><h3>Support Agent Role</h3><p>Custom WordPress role with <code>manage_tickets</code>, <code>reply_ticket</code>, and <code>close_ticket</code> capabilities.</p></div>
+        <div class="feat-card"><div class="feat-icon">🔒</div><h3>Private Notes</h3><p>Agents can add internal notes visible only to other agents — never shown to the customer.</p></div>
+        <div class="feat-card"><div class="feat-icon">🏢</div><h3>Departments</h3><p>Optional ticket routing taxonomy. Departments appear as a dropdown in the submission form automatically.</p></div>
+      </div>
+      <div style="margin-top:2rem;">
+        <h3>Ticket Status Badges</h3>
+        <p>Color-coded status badges shown in the customer portal and admin list.</p>
+        <div class="badge-row">
+          <span class="badge badge-open">Open</span>
+          <span class="badge badge-progress">In Progress</span>
+          <span class="badge badge-resolved">Resolved</span>
+          <span class="badge badge-closed">Closed</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="shortcodes" aria-labelledby="shortcodes-h">
+    <div class="container">
+      <div class="eyebrow">Developer Reference</div>
+      <h2 id="shortcodes-h">Shortcodes &amp; REST API</h2>
+
+      <h3>Ticket Submission Form</h3>
+      <p>Renders the support form. Guests see Name + Email fields. Logged-in users use their account details automatically.</p>
+      <div class="code-box"><span class="hl">[support_ticket_form]</span>
+<span class="hl">[support_ticket_form</span> title=<span style="color:#9de06f">"How Can We Help?"</span><span class="hl">]</span></div>
+
+      <h3>Customer Ticket History</h3>
+      <p>Shows the logged-in customer's tickets in a table. Non-logged-in users see a login prompt.</p>
+      <div class="code-box"><span class="hl">[my_tickets]</span></div>
+
+      <table aria-label="support_ticket_form attributes">
+        <thead><tr><th>Attribute</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>title</code></td><td>"Submit a Support Ticket"</td><td>Heading shown above the form.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>REST API Endpoints</h3>
+      <table aria-label="REST API">
+        <thead><tr><th>Method</th><th>Endpoint</th><th>Auth</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>GET</code></td><td><code>/wp-support-tickets/v1/tickets</code></td><td>Agent</td><td>List tickets. Filter by <code>status</code>, <code>per_page</code>.</td></tr>
+          <tr><td><code>GET</code></td><td><code>/wp-support-tickets/v1/tickets/{id}</code></td><td>Owner/Agent</td><td>Single ticket with reply thread.</td></tr>
+          <tr><td><code>PATCH</code></td><td><code>/wp-support-tickets/v1/tickets/{id}/status</code></td><td>Agent</td><td>Update ticket status.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>SLA Configuration</h3>
+      <table aria-label="SLA defaults">
+        <thead><tr><th>Priority</th><th>Default SLA Hours</th><th>Configure At</th></tr></thead>
+        <tbody>
+          <tr><td>Normal</td><td>24 hours</td><td>Support → Settings → SLA Normal</td></tr>
+          <tr><td>High</td><td>8 hours</td><td>Support → Settings → SLA High</td></tr>
+          <tr><td>Critical</td><td>2 hours</td><td>Support → Settings → SLA Critical</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="author" class="author-section" aria-labelledby="author-h">
+    <div class="container">
+      <div class="eyebrow">The Developer</div>
+      <h2 id="author-h">Author Profile</h2>
+      <div class="author-layout">
+        <div class="avatar" aria-hidden="true">VS</div>
+        <div>
+          <h3 style="color:#fff;font-family:'IBM Plex Serif',serif;font-size:1.5rem;margin-bottom:.25rem;">Vetri Suriya</h3>
+          <p style="color:rgba(255,255,255,.55);font-size:.9rem;margin-bottom:.75rem;">PHP · WordPress · AWS</p>
+          <p>WordPress developer with a focus on custom plugins, REST APIs, and production-grade Laravel applications. Builds open-source tools that solve real business problems without vendor lock-in.</p>
+          <div class="s-links">
+            <a href="https://github.com/vetrisuriya" class="s-link" target="_blank" rel="noopener">⚙ GitHub</a>
+            <a href="https://linkedin.com/in/vetrisuriya" class="s-link" target="_blank" rel="noopener">💼 LinkedIn</a>
+            <a href="https://vetrisuriya.in/" class="s-link" target="_blank" rel="noopener">🌐 Portfolio</a>
+            <a href="https://github.com/vetrisuriya/wp-plugins" class="s-link">🔌 More Plugins</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer role="contentinfo">
+  <div class="ft-brand">WP Support Ticket System</div>
+  <p>Designed &amp; developed by <a href="https://vetrisuriya.in/" target="_blank" rel="noopener">Vetri Suriya</a> · GPL v2 License · WordPress Plugin v1.0.0</p>
+  <p style="margin-top:.375rem;">© 2026 Vetri Suriya. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

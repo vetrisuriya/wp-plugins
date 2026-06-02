@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="WP Testimonials & Social Proof — Display customer testimonials, star ratings, and review carousels in WordPress. Schema markup, front-end submission form, REST API, and multiple layouts.">
+<meta name="keywords" content="WordPress testimonials plugin, review plugin WordPress, star rating plugin WP, testimonial carousel WordPress, social proof plugin">
+<meta name="author" content="Vetri Suriya">
+<meta property="og:title" content="WP Testimonials & Social Proof — WordPress Plugin by Vetri Suriya">
+<meta property="og:type" content="website">
+<title>WP Testimonials &amp; Social Proof — WordPress Plugin | Vetri Suriya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --terra:    #c0522a;
+    --terra-d:  #8f3a1c;
+    --terra-l:  #f9ece6;
+    --cream:    #fdf8f2;
+    --parchment:#f5ede0;
+    --dark:     #1e120a;
+    --dark-m:   #2d1c0e;
+    --ink:      #2d1c10;
+    --ink-60:   #6b5040;
+    --border:   #e8d5c4;
+    --white:    #ffffff;
+    --sage:     #5a7a5e;
+    --gold:     #c08c20;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--cream); color: var(--ink); font-family: 'Source Sans 3', sans-serif; font-size: 1rem; line-height: 1.75; }
+
+  /* ── NAV ── */
+  nav { background: var(--dark); padding: 1.125rem 2.5rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .nav-brand { font-family: 'DM Serif Display', serif; color: var(--terra-l); font-size: 1.0625rem; text-decoration: none; letter-spacing: .01em; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: rgba(249,236,230,.45); font-size: .875rem; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; text-decoration: none; transition: color .2s; }
+  .nav-links a:hover { color: #f0977a; }
+
+  /* ── HERO ── */
+  header { background: var(--dark-m); padding: 6rem 2.5rem 5rem; position: relative; overflow: hidden; }
+  header::before { content: '"'; position: absolute; left: -1rem; top: -1rem; font-family: 'DM Serif Display', serif; font-size: clamp(200px, 30vw, 400px); color: rgba(192,82,42,.06); line-height: 1; pointer-events: none; }
+  .hero-c { max-width: 820px; margin: 0 auto; position: relative; z-index: 1; }
+  .h-pill { display: inline-block; border: 1px solid rgba(192,82,42,.4); color: #f0977a; font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: .35rem 1rem; border-radius: 2px; margin-bottom: 1.75rem; }
+  h1 { font-family: 'DM Serif Display', serif; font-size: clamp(2.5rem, 7vw, 5.5rem); color: var(--cream); line-height: 1.05; margin-bottom: 1.25rem; }
+  h1 em { color: #f0977a; font-style: italic; }
+  .hero-p { font-size: 1.125rem; font-weight: 300; color: rgba(253,248,242,.55); max-width: 580px; margin-bottom: 2.5rem; line-height: 1.8; }
+  .cta { display: flex; flex-wrap: wrap; gap: .875rem; }
+  .btn { display: inline-flex; align-items: center; gap: .5rem; padding: .9375rem 2.25rem; font-family: 'Source Sans 3', sans-serif; font-weight: 700; font-size: .9375rem; text-decoration: none; cursor: pointer; border: none; transition: all .2s; }
+  .btn-terra { background: var(--terra); color: #fff; }
+  .btn-terra:hover { background: var(--terra-d); transform: translateY(-2px); }
+  .btn-wht { background: rgba(253,248,242,.08); color: rgba(253,248,242,.7); border: 1.5px solid rgba(253,248,242,.2); }
+  .btn-wht:hover { border-color: rgba(253,248,242,.45); color: var(--cream); }
+  .btn-dim { background: rgba(253,248,242,.03); color: rgba(253,248,242,.3); }
+  .btn-dim:hover { color: rgba(253,248,242,.6); }
+
+  /* ── REVIEW DEMO ── */
+  .review-demo { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2.5rem; }
+  .r-card { background: rgba(253,248,242,.06); border: 1px solid rgba(192,82,42,.2); padding: 1.25rem; width: 220px; border-radius: 4px; }
+  .r-stars { color: var(--gold); font-size: 1rem; margin-bottom: .5rem; letter-spacing: .1em; }
+  .r-quote { font-family: 'DM Serif Display', serif; font-size: .9375rem; color: rgba(253,248,242,.8); line-height: 1.5; margin-bottom: .75rem; font-style: italic; }
+  .r-name { font-size: .8125rem; color: rgba(253,248,242,.4); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+
+  /* ── SECTIONS ── */
+  section { padding: 5.5rem 2.5rem; }
+  .wrap { max-width: 900px; margin: 0 auto; }
+  .eyebrow { font-family: 'Source Sans 3', sans-serif; font-size: .75rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--terra); margin-bottom: .625rem; }
+  h2 { font-family: 'DM Serif Display', serif; font-size: clamp(1.875rem, 4.5vw, 3.25rem); color: var(--ink); margin-bottom: 1rem; line-height: 1.15; }
+  h3 { font-family: 'DM Serif Display', serif; font-size: 1.25rem; color: var(--terra-d); margin-bottom: .45rem; }
+  p { color: var(--ink-60); }
+
+  /* ── INSTALL STEPS ── */
+  .steps { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 1rem; margin-top: 2rem; }
+  .step { border-top: 3px solid var(--terra); padding: 1.25rem; background: var(--white); border: 1px solid var(--border); border-top: 3px solid var(--terra); }
+  .sn { font-family: 'DM Serif Display', serif; font-size: 2rem; color: var(--terra); line-height: 1; margin-bottom: .75rem; }
+  .step h3 { color: var(--ink); font-family: 'Source Sans 3', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: .3rem; }
+  .step p { font-size: .875rem; margin: 0; }
+
+  /* ── FEAT GRID ── */
+  .fg { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.25rem; margin-top: 2rem; }
+  .fc { padding: 1.5rem; background: var(--white); border: 1px solid var(--border); }
+  .fi { font-size: 1.5rem; margin-bottom: .75rem; }
+  .fc h3 { font-family: 'Source Sans 3', sans-serif; font-size: .9375rem; font-weight: 700; color: var(--ink); margin-bottom: .35rem; }
+  .fc p { font-size: .875rem; margin: 0; }
+
+  /* ── CODE ── */
+  pre { background: var(--dark); color: #f0d8c8; padding: 1.25rem 1.5rem; font-family: 'Courier New', monospace; font-size: .875rem; line-height: 1.65; overflow-x: auto; margin: 1rem 0; border-left: 4px solid var(--terra); }
+  pre .kw { color: #f0977a; }
+  pre .val { color: #9de06f; }
+  code { background: var(--terra-l); color: var(--terra-d); border: 1px solid #e8c4b0; padding: 1px 6px; font-size: .8125rem; }
+
+  /* ── TABLE ── */
+  .tbl { border: 1px solid var(--border); overflow: hidden; margin: 1.25rem 0; }
+  table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+  thead { background: var(--dark); color: #f0977a; }
+  th { padding: .75rem 1.25rem; text-align: left; font-family: 'Source Sans 3', sans-serif; font-weight: 700; font-size: .8125rem; letter-spacing: .08em; text-transform: uppercase; }
+  td { padding: .75rem 1.25rem; border-bottom: 1px solid var(--border); color: var(--ink-60); vertical-align: top; background: var(--white); }
+  tr:nth-child(even) td { background: var(--parchment); }
+
+  /* ── AUTHOR ── */
+  .au-sec { background: var(--parchment); border-top: 1px solid var(--border); }
+  .au-layout { display: grid; grid-template-columns: auto 1fr; gap: 2.5rem; align-items: start; }
+  .av { width: 88px; height: 88px; background: var(--terra); display: flex; align-items: center; justify-content: center; font-family: 'DM Serif Display', serif; font-size: 2.25rem; color: var(--cream); flex-shrink: 0; }
+  .au-nm { font-family: 'DM Serif Display', serif; font-size: 1.75rem; color: var(--ink); margin-bottom: .2rem; }
+  .au-role { color: var(--ink-60); font-size: .875rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; margin-bottom: .75rem; }
+  .soc { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; }
+  .sl { display: inline-flex; align-items: center; gap: .4rem; padding: .55rem 1.125rem; background: var(--white); border: 1px solid var(--border); color: var(--ink-60); text-decoration: none; font-size: .875rem; font-weight: 700; transition: all .2s; }
+  .sl:hover { border-color: var(--terra); color: var(--terra-d); }
+
+  /* ── FOOTER ── */
+  footer { background: var(--dark); border-top: 2px solid var(--terra); padding: 2.5rem 2rem; text-align: center; }
+  .ft { font-family: 'DM Serif Display', serif; font-size: 1.25rem; color: #f0977a; margin-bottom: .5rem; }
+  footer p { color: rgba(253,248,242,.3); font-size: .8125rem; }
+  footer a { color: #f0977a; text-decoration: none; }
+
+  @media (max-width: 640px) { .au-layout { grid-template-columns: 1fr; } .nav-links { display: none; } .review-demo { display: none; } }
+</style>
+</head>
+<body>
+
+<nav aria-label="Site navigation">
+  <a href="#" class="nav-brand">⭐ WP Testimonials &amp; Social Proof</a>
+  <ul class="nav-links">
+    <li><a href="#install">Install</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#shortcodes">Shortcodes</a></li>
+    <li><a href="#author">Author</a></li>
+  </ul>
+</nav>
+
+<header role="banner">
+  <div class="hero-c">
+    <div class="h-pill">WordPress Plugin · v1.0.0 · GPL v2</div>
+    <h1>WP Testimonials<br>&amp; <em>Social Proof</em></h1>
+    <p class="hero-p">Collect, display, and manage customer reviews inside WordPress. Star ratings, carousel and grid layouts, JSON-LD Schema.org markup for rich search results, front-end submission forms, and REST API endpoints — no third-party review platform needed.</p>
+    <div class="cta">
+      <a href="wp-testimonials-social-proof.zip" class="btn btn-terra" download>⬇ Download ZIP</a>
+      <a href="#author" class="btn btn-wht">👤 Author Profile</a>
+      <a href="https://vetrisuriya.in/" class="btn btn-dim">🗂 Portfolio</a>
+    </div>
+    <div class="review-demo" aria-label="Sample testimonial cards">
+      <div class="r-card"><div class="r-stars">★★★★★</div><div class="r-quote">"Incredible plugin. Setup took 10 minutes and the results look professional."</div><div class="r-name">Sarah M. — Product Manager</div></div>
+      <div class="r-card"><div class="r-stars">★★★★★</div><div class="r-quote">"Schema markup is a game changer for our review snippets in Google."</div><div class="r-name">James K. — SEO Lead</div></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="install" aria-labelledby="install-h">
+    <div class="wrap">
+      <div class="eyebrow">Getting Started</div>
+      <h2 id="install-h">Installation &amp; Activation</h2>
+      <p>Activate in seconds. No API keys, no external services, no configuration files.</p>
+      <div class="steps">
+        <div class="step"><div class="sn">1</div><h3>Upload Plugin</h3><p>Plugins → Add New → Upload Plugin. Select <code>wp-testimonials-social-proof.zip</code>.</p></div>
+        <div class="step"><div class="sn">2</div><h3>Activate</h3><p>Click Activate Plugin. Registers the <code>testimonial</code> CPT and adds the <code>manage_testimonials</code> capability.</p></div>
+        <div class="step"><div class="sn">3</div><h3>Add Testimonials</h3><p>Go to <strong>Testimonials → Add New</strong>. Fill in author, company, star rating, and the review text.</p></div>
+        <div class="step"><div class="sn">4</div><h3>Embed Shortcode</h3><p>Add <code>[testimonials]</code> to any page or post. Use attributes to choose layout and filter by rating.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" style="background:var(--parchment)" aria-labelledby="feat-h">
+    <div class="wrap">
+      <div class="eyebrow">What's Included</div>
+      <h2 id="feat-h">Plugin Features</h2>
+      <div class="fg">
+        <div class="fc"><div class="fi">⭐</div><h3>Star Ratings</h3><p>1–5 star rating stored as post meta. Filter the testimonial grid to show only 5-star reviews.</p></div>
+        <div class="fc"><div class="fi">🎠</div><h3>Carousel Layout</h3><p>Auto-advancing carousel with configurable autoplay interval. CSS-only, no jQuery dependency.</p></div>
+        <div class="fc"><div class="fi">🏷</div><h3>Schema Markup</h3><p>JSON-LD <code>Review</code> and <code>AggregateRating</code> structured data for Google rich snippets.</p></div>
+        <div class="fc"><div class="fi">📝</div><h3>Submission Form</h3><p><code>[testimonial_form]</code> shortcode lets customers submit their own reviews. Admin approves before publishing.</p></div>
+        <div class="fc"><div class="fi">🎛</div><h3>Category Filter</h3><p>Testimonial Category taxonomy. Show only reviews from a specific product, service, or client segment.</p></div>
+        <div class="fc"><div class="fi">🔌</div><h3>REST API</h3><p>Public GET endpoint to fetch testimonials programmatically for headless or SPA integrations.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="shortcodes" aria-labelledby="sc-h">
+    <div class="wrap">
+      <div class="eyebrow">Developer Reference</div>
+      <h2 id="sc-h">Shortcodes &amp; REST API</h2>
+
+      <h3>Testimonials Display</h3>
+      <pre><span class="kw">[testimonials]</span>
+<span class="kw">[testimonials</span>
+  <span class="val">columns="3"</span>
+  <span class="val">rating="5"</span>
+  <span class="val">layout="carousel"</span>
+  <span class="val">autoplay="4"</span>
+  <span class="val">show_filter="true"</span>
+  <span class="val">schema="true"</span>
+<span class="kw">]</span></pre>
+
+      <div class="tbl">
+        <table aria-label="testimonials shortcode attributes">
+          <thead><tr><th>Attribute</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>columns</code></td><td><code>3</code></td><td>Grid columns: 1, 2, 3, or 4.</td></tr>
+            <tr><td><code>rating</code></td><td>all</td><td>Minimum star rating to show (e.g. <code>4</code> shows 4 and 5-star reviews).</td></tr>
+            <tr><td><code>layout</code></td><td><code>grid</code></td><td>Display layout: <code>grid</code> or <code>carousel</code>.</td></tr>
+            <tr><td><code>autoplay</code></td><td><code>5</code></td><td>Carousel autoplay interval in seconds. Set <code>0</code> to disable.</td></tr>
+            <tr><td><code>show_filter</code></td><td><code>false</code></td><td>Show category filter tabs above the grid.</td></tr>
+            <tr><td><code>schema</code></td><td><code>false</code></td><td>Inject JSON-LD Schema.org markup for rich search results.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Testimonial Submission Form</h3>
+      <pre><span class="kw">[testimonial_form]</span>
+<span class="kw">[testimonial_form</span>
+  <span class="val">title="Share Your Experience"</span>
+  <span class="val">show_company="true"</span>
+  <span class="val">require_login="false"</span>
+<span class="kw">]</span></pre>
+
+      <h3>REST API</h3>
+      <pre>GET <span class="val">/wp-json/wptsm/v1/testimonials</span>   <span style="color:#8a7060">?rating=5&per_page=10&category=product-a</span></pre>
+    </div>
+  </section>
+
+  <section id="author" class="au-sec" aria-labelledby="author-h">
+    <div class="wrap">
+      <div class="eyebrow">The Developer</div>
+      <h2 id="author-h">Author Profile</h2>
+      <div class="au-layout">
+        <div class="av" aria-hidden="true">VS</div>
+        <div>
+          <div class="au-nm">Vetri Suriya</div>
+          <div class="au-role">PHP · WordPress · AWS</div>
+          <p>WordPress developer building production-grade plugins for the WordPress ecosystem. Focused on clean code, WordPress coding standards, and user-facing features that work without external services.</p>
+          <div class="soc">
+            <a href="https://github.com/vetrisuriya" class="sl" target="_blank" rel="noopener">⚙ GitHub</a>
+            <a href="https://linkedin.com/in/vetrisuriya" class="sl" target="_blank" rel="noopener">💼 LinkedIn</a>
+            <a href="https://vetrisuriya.in/" class="sl" target="_blank" rel="noopener">🌐 Portfolio</a>
+            <a href="https://github.com/vetrisuriya/wp-plugins" class="sl">🔌 More Plugins</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer role="contentinfo">
+  <div class="ft">WP Testimonials &amp; Social Proof</div>
+  <p>Designed &amp; developed by <a href="https://vetrisuriya.in/" target="_blank" rel="noopener">Vetri Suriya</a> · <a href="https://www.gnu.org/licenses/gpl-2.0.html" target="_blank" rel="noopener">GPL v2</a> · WordPress Plugin v1.0.0</p>
+  <p style="margin-top:.375rem;">© 2026 Vetri Suriya. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

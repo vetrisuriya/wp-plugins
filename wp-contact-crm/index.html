@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="WP Advanced Contact Form & CRM — A full-featured contact form with a built-in CRM dashboard in WordPress. AJAX submission, rate limiting, CSV export, View/Reply/Delete submissions, and REST API.">
+<meta name="keywords" content="WordPress contact form CRM, contact form plugin WP, CRM plugin WordPress, AJAX contact form WordPress, form submission manager WP">
+<meta name="author" content="Vetri Suriya">
+<meta property="og:title" content="WP Advanced Contact Form & CRM — WordPress Plugin by Vetri Suriya">
+<meta property="og:type" content="website">
+<title>WP Advanced Contact Form &amp; CRM — WordPress Plugin | Vetri Suriya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #09101f;
+    --surface:  #0e1829;
+    --card:     #131f33;
+    --blue:     #2563eb;
+    --blue-l:   #3b82f6;
+    --blue-bg:  rgba(37,99,235,.08);
+    --cyan:     #06b6d4;
+    --white:    #e8f0ff;
+    --muted:    #6b7fa8;
+    --border:   #1e2d47;
+    --green:    #10b981;
+    --orange:   #f59e0b;
+    --red:      #ef4444;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--white); font-family: 'Outfit', sans-serif; font-size: 1rem; line-height: 1.7; }
+
+  /* ── NAV ── */
+  nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1rem 2.5rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .nav-brand { font-family: 'Syne', sans-serif; color: var(--blue-l); font-weight: 800; font-size: 1rem; text-decoration: none; letter-spacing: -.01em; }
+  .nav-v { background: var(--blue); color: #fff; font-size: .6875rem; font-weight: 700; padding: 2px 8px; border-radius: 4px; margin-left: .5rem; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--muted); font-size: .875rem; font-weight: 500; text-decoration: none; transition: color .2s; }
+  .nav-links a:hover { color: var(--blue-l); }
+
+  /* ── HERO ── */
+  header { min-height: 85vh; display: flex; align-items: center; padding: 5rem 2.5rem 4rem; position: relative; overflow: hidden; }
+  header::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 30%, rgba(37,99,235,.18) 0%, transparent 55%), radial-gradient(ellipse at 20% 70%, rgba(6,182,212,.08) 0%, transparent 50%); pointer-events: none; }
+  .hero-inner { max-width: 860px; margin: 0 auto; position: relative; z-index: 1; }
+  .h-chip { display: inline-flex; align-items: center; gap: .5rem; background: var(--blue-bg); border: 1px solid rgba(37,99,235,.3); color: var(--blue-l); font-family: 'Syne', sans-serif; font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: .4rem 1rem; border-radius: 20px; margin-bottom: 1.75rem; }
+  h1 { font-family: 'Syne', sans-serif; font-size: clamp(2.25rem, 6.5vw, 5rem); font-weight: 800; line-height: 1.05; margin-bottom: 1.25rem; letter-spacing: -.02em; }
+  .h1-line2 { background: linear-gradient(90deg, var(--blue-l), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hero-p { font-size: 1.0625rem; font-weight: 300; color: rgba(232,240,255,.55); max-width: 580px; margin-bottom: 2.5rem; line-height: 1.75; }
+  .cta { display: flex; flex-wrap: wrap; gap: .875rem; }
+  .btn { display: inline-flex; align-items: center; gap: .5rem; padding: .9375rem 2.25rem; font-family: 'Syne', sans-serif; font-weight: 700; font-size: .875rem; text-decoration: none; cursor: pointer; border: none; transition: all .2s; border-radius: 8px; letter-spacing: .02em; }
+  .btn-blue { background: var(--blue); color: #fff; }
+  .btn-blue:hover { background: #1d4ed8; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37,99,235,.35); }
+  .btn-border { background: transparent; color: var(--white); border: 1.5px solid var(--border); }
+  .btn-border:hover { border-color: var(--blue-l); color: var(--blue-l); }
+  .btn-dim { background: var(--card); color: var(--muted); }
+  .btn-dim:hover { color: var(--white); }
+
+  /* ── CRM PREVIEW ── */
+  .crm-preview { margin-top: 2.5rem; background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; max-width: 640px; }
+  .crm-header { background: var(--surface); padding: .75rem 1.25rem; display: flex; align-items: center; gap: .5rem; border-bottom: 1px solid var(--border); }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .crm-header-title { font-family: 'Syne', sans-serif; font-size: .8125rem; font-weight: 700; color: var(--muted); margin-left: auto; }
+  .crm-row { display: grid; grid-template-columns: 1fr 1fr 1fr 80px; gap: 0; border-bottom: 1px solid var(--border); }
+  .crm-row:last-child { border-bottom: none; }
+  .crm-cell { padding: .6rem 1rem; font-size: .8125rem; color: var(--muted); }
+  .crm-th .crm-cell { color: rgba(232,240,255,.35); font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; background: rgba(0,0,0,.3); }
+  .crm-name { color: var(--white) !important; font-weight: 600; }
+  .status-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+  .st-new  { background: rgba(37,99,235,.2); color: var(--blue-l); }
+  .st-read { background: rgba(16,185,129,.2); color: var(--green); }
+  .st-spam { background: rgba(239,68,68,.2); color: var(--red); }
+
+  /* ── SECTIONS ── */
+  section { padding: 5rem 2.5rem; }
+  .wrap { max-width: 900px; margin: 0 auto; }
+  .eyebrow { font-family: 'Syne', sans-serif; font-size: .75rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: var(--blue-l); margin-bottom: .625rem; }
+  h2 { font-family: 'Syne', sans-serif; font-size: clamp(1.75rem, 4.5vw, 3rem); font-weight: 800; margin-bottom: 1rem; line-height: 1.1; letter-spacing: -.01em; }
+  h3 { font-family: 'Syne', sans-serif; font-size: 1.0625rem; font-weight: 700; color: var(--blue-l); margin-bottom: .5rem; }
+  p { color: rgba(232,240,255,.55); }
+
+  /* ── FEAT GRID ── */
+  .fg { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1px; background: var(--border); margin-top: 2rem; border-radius: 10px; overflow: hidden; }
+  .fc { background: var(--card); padding: 1.5rem; }
+  .fc-i { font-size: 1.375rem; margin-bottom: .75rem; }
+  .fc h3 { color: var(--white); font-size: .9375rem; margin-bottom: .35rem; }
+  .fc p { font-size: .875rem; margin: 0; }
+
+  /* ── CODE ── */
+  pre { background: #060d1a; border: 1px solid var(--border); border-left: 3px solid var(--blue); padding: 1.25rem 1.5rem; font-family: 'Courier New', monospace; font-size: .875rem; line-height: 1.65; overflow-x: auto; margin: 1rem 0; color: #c4d8ff; border-radius: 6px; }
+  pre .kw { color: var(--blue-l); }
+  pre .val { color: #86efac; }
+  code { background: var(--blue-bg); color: var(--blue-l); border: 1px solid rgba(37,99,235,.25); padding: 1px 6px; border-radius: 4px; font-size: .8125rem; }
+
+  /* ── TABLE ── */
+  table { width: 100%; border-collapse: collapse; font-size: .9rem; margin: 1.25rem 0; background: var(--card); border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+  thead { background: var(--blue); }
+  th { padding: .75rem 1rem; text-align: left; color: #fff; font-family: 'Syne', sans-serif; font-weight: 700; font-size: .8125rem; letter-spacing: .06em; text-transform: uppercase; }
+  td { padding: .75rem 1rem; border-bottom: 1px solid var(--border); color: rgba(232,240,255,.55); vertical-align: top; }
+
+  /* ── AUTHOR ── */
+  .au-sec { background: var(--surface); border-top: 1px solid var(--border); }
+  .au-lay { display: grid; grid-template-columns: auto 1fr; gap: 2.5rem; align-items: start; }
+  .av { width: 84px; height: 84px; border-radius: 12px; background: linear-gradient(135deg, var(--blue), var(--cyan)); display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-size: 1.75rem; font-weight: 800; color: #fff; flex-shrink: 0; }
+  .au-nm { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; margin-bottom: .2rem; }
+  .au-role { color: var(--muted); font-size: .875rem; margin-bottom: .75rem; }
+  .soc { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; }
+  .sl { display: inline-flex; align-items: center; gap: .4rem; padding: .55rem 1.125rem; background: var(--card); border: 1px solid var(--border); color: var(--muted); text-decoration: none; font-size: .875rem; font-weight: 500; border-radius: 6px; transition: all .2s; }
+  .sl:hover { border-color: var(--blue-l); color: var(--blue-l); }
+
+  /* ── FOOTER ── */
+  footer { background: #040b16; border-top: 1px solid var(--border); padding: 2.5rem 2rem; text-align: center; }
+  .ft { font-family: 'Syne', sans-serif; font-size: 1.0625rem; font-weight: 800; color: var(--blue-l); margin-bottom: .5rem; }
+  footer p { color: rgba(232,240,255,.25); font-size: .8125rem; }
+  footer a { color: var(--blue-l); text-decoration: none; }
+
+  @media (max-width: 640px) { .au-lay { grid-template-columns: 1fr; } .nav-links { display: none; } .crm-row { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+
+<nav aria-label="Site navigation">
+  <a href="#" class="nav-brand">WP Contact + CRM<span class="nav-v">v1.0</span></a>
+  <ul class="nav-links">
+    <li><a href="#install">Install</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#shortcodes">Shortcode</a></li>
+    <li><a href="#author">Author</a></li>
+  </ul>
+</nav>
+
+<header role="banner">
+  <div class="hero-inner">
+    <div class="h-chip">📬 WordPress Plugin · v1.0.0 · GPL v2</div>
+    <h1>WP Advanced<br><span class="h1-line2">Contact Form &amp; CRM</span></h1>
+    <p class="hero-p">A fully-featured contact form with a built-in CRM dashboard. AJAX submission, server-side rate limiting, View / Reply / Delete from the admin, CSV export, dark mode CRM interface, and REST API endpoints.</p>
+    <div class="cta">
+      <a href="wp-contact-crm.zip" class="btn btn-blue" download>⬇ Download ZIP</a>
+      <a href="#author" class="btn btn-border">👤 Author Profile</a>
+      <a href="https://vetrisuriya.in/" class="btn btn-dim">🗂 Portfolio</a>
+    </div>
+
+    <div class="crm-preview" aria-label="CRM dashboard preview">
+      <div class="crm-header">
+        <span class="dot" style="background:#ef4444;"></span>
+        <span class="dot" style="background:#f59e0b;"></span>
+        <span class="dot" style="background:#10b981;"></span>
+        <span class="crm-header-title">CRM Dashboard — Submissions</span>
+      </div>
+      <div class="crm-th crm-row">
+        <div class="crm-cell">Name</div>
+        <div class="crm-cell">Email</div>
+        <div class="crm-cell">Subject</div>
+        <div class="crm-cell">Status</div>
+      </div>
+      <div class="crm-row"><div class="crm-cell crm-name">Jane Smith</div><div class="crm-cell">jane@co.com</div><div class="crm-cell">Website inquiry</div><div class="crm-cell"><span class="status-badge st-new">New</span></div></div>
+      <div class="crm-row"><div class="crm-cell crm-name">Tom Lee</div><div class="crm-cell">tom@biz.io</div><div class="crm-cell">Partnership offer</div><div class="crm-cell"><span class="status-badge st-read">Read</span></div></div>
+      <div class="crm-row"><div class="crm-cell crm-name">Spam Bot</div><div class="crm-cell">bot@spam.ru</div><div class="crm-cell">Buy cheap followers</div><div class="crm-cell"><span class="status-badge st-spam">Spam</span></div></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="install" aria-labelledby="install-h">
+    <div class="wrap">
+      <div class="eyebrow">Setup Guide</div>
+      <h2 id="install-h">Installation &amp; Activation</h2>
+      <p>The plugin activates instantly. No external services or API keys needed.</p>
+      <div class="fg" style="margin-top:1.75rem;">
+        <div class="fc"><div class="fc-i">📦</div><h3>01 — Upload</h3><p>Plugins → Add New → Upload Plugin. Select <code>wp-contact-crm.zip</code> and Install Now.</p></div>
+        <div class="fc"><div class="fc-i">⚡</div><h3>02 — Activate</h3><p>Click Activate. Creates the <code>wp_wpcf_submissions</code> database table. Registers all AJAX and REST endpoints.</p></div>
+        <div class="fc"><div class="fc-i">⚙️</div><h3>03 — Settings</h3><p>Go to <strong>Contact CRM → Settings</strong>. Set notification email, rate limit window, and honeypot field toggle.</p></div>
+        <div class="fc"><div class="fc-i">📝</div><h3>04 — Embed Form</h3><p>Add <code>[contact_form]</code> to any page. Configure fields using shortcode attributes and publish.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" style="background:var(--surface)" aria-labelledby="feat-h">
+    <div class="wrap">
+      <div class="eyebrow">Core Features</div>
+      <h2 id="feat-h">What's Inside</h2>
+      <div class="fg">
+        <div class="fc"><div class="fc-i">📬</div><h3>AJAX Contact Form</h3><p>Submits without page reload. Client-side validation + server-side sanitisation and nonce verification.</p></div>
+        <div class="fc"><div class="fc-i">🚦</div><h3>Rate Limiting</h3><p>Configurable IP-based rate limiter prevents spam flooding. Uses WordPress transients as the storage layer.</p></div>
+        <div class="fc"><div class="fc-i">🍯</div><h3>Honeypot Field</h3><p>Hidden honeypot field invisible to humans. Bots that fill it in are silently rejected with no error message.</p></div>
+        <div class="fc"><div class="fc-i">💼</div><h3>CRM Dashboard</h3><p>Full submission management: View message preview, Reply via email, Delete, and update status — all via AJAX.</p></div>
+        <div class="fc"><div class="fc-i">📥</div><h3>CSV Export</h3><p>Export all or filtered submissions as a CSV file directly from the CRM dashboard.</p></div>
+        <div class="fc"><div class="fc-i">🔌</div><h3>REST API</h3><p>GET submissions with status and date filters. PATCH to update status. POST to submit via API.</p></div>
+        <div class="fc"><div class="fc-i">📧</div><h3>Admin Notification</h3><p>Instant <code>wp_mail()</code> notification on every submission with subject, message preview, and sender details.</p></div>
+        <div class="fc"><div class="fc-i">🎨</div><h3>Form Themes</h3><p>Apply CSS theme classes: <code>wpcf-theme-minimal</code>, <code>wpcf-theme-bordered</code>, <code>wpcf-theme-floating</code>.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="shortcodes" aria-labelledby="sc-h">
+    <div class="wrap">
+      <div class="eyebrow">Developer Reference</div>
+      <h2 id="sc-h">Shortcode &amp; REST API</h2>
+
+      <h3>Contact Form Shortcode</h3>
+      <p>Renders the AJAX contact form. All optional fields can be shown or hidden via attributes.</p>
+      <pre><span class="kw">[contact_form]</span>
+<span class="kw">[contact_form</span>
+  <span class="val">title="Contact Our Team"</span>
+  <span class="val">subtitle="We reply within 24 hours"</span>
+  <span class="val">show_phone="true"</span>
+  <span class="val">show_subject="true"</span>
+  <span class="val">class="wpcf-theme-minimal"</span>
+<span class="kw">]</span></pre>
+
+      <table aria-label="contact_form attributes">
+        <thead><tr><th>Attribute</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>title</code></td><td>"Get In Touch"</td><td>Form heading.</td></tr>
+          <tr><td><code>subtitle</code></td><td>""</td><td>Optional subheading below the title.</td></tr>
+          <tr><td><code>show_phone</code></td><td><code>false</code></td><td>Show/hide optional phone field.</td></tr>
+          <tr><td><code>show_subject</code></td><td><code>true</code></td><td>Show/hide the subject line field.</td></tr>
+          <tr><td><code>class</code></td><td>""</td><td>CSS class for theming: <code>wpcf-theme-minimal</code>, <code>wpcf-theme-bordered</code>.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>REST API Endpoints</h3>
+      <table aria-label="REST API">
+        <thead><tr><th>Method</th><th>Endpoint</th><th>Auth</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>GET</code></td><td><code>/wpcf/v1/submissions</code></td><td>Admin</td><td>List submissions. Params: <code>status</code>, <code>per_page</code>, <code>page</code>.</td></tr>
+          <tr><td><code>PATCH</code></td><td><code>/wpcf/v1/submissions/{id}/status</code></td><td>Admin</td><td>Update status: <code>new</code>, <code>read</code>, <code>replied</code>, <code>spam</code>.</td></tr>
+          <tr><td><code>DELETE</code></td><td><code>/wpcf/v1/submissions/{id}</code></td><td>Admin</td><td>Permanently delete a submission.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="author" class="au-sec" aria-labelledby="author-h">
+    <div class="wrap">
+      <div class="eyebrow">The Developer</div>
+      <h2 id="author-h">Author Profile</h2>
+      <div class="au-lay">
+        <div class="av" aria-hidden="true">VS</div>
+        <div>
+          <div class="au-nm">Vetri Suriya</div>
+          <div class="au-role">PHP · WordPress · AWS</div>
+          <p>Building production-quality WordPress plugins with clean architecture, proper security practices, and zero external dependencies. Each plugin in this library demonstrates a complete WordPress technology stack.</p>
+          <div class="soc">
+            <a href="https://github.com/vetrisuriya" class="sl" target="_blank" rel="noopener">⚙ GitHub</a>
+            <a href="https://linkedin.com/in/vetrisuriya" class="sl" target="_blank" rel="noopener">💼 LinkedIn</a>
+            <a href="https://vetrisuriya.in/" class="sl" target="_blank" rel="noopener">🌐 Portfolio</a>
+            <a href="https://github.com/vetrisuriya/wp-plugins" class="sl">🔌 More Plugins</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer role="contentinfo">
+  <div class="ft">WP Advanced Contact Form &amp; CRM</div>
+  <p>Designed &amp; developed by <a href="https://vetrisuriya.in/" target="_blank" rel="noopener">Vetri Suriya</a> · <a href="https://www.gnu.org/licenses/gpl-2.0.html" target="_blank" rel="noopener">GPL v2</a> · v1.0.0</p>
+  <p style="margin-top:.375rem;">© 2026 Vetri Suriya. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

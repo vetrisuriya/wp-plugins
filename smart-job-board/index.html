@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Smart Job Board WordPress Plugin — Post jobs, collect applications, and filter listings by category and location. Free developer guide, shortcodes, and documentation.">
+<meta name="keywords" content="WordPress job board plugin, job listing plugin, recruitment plugin, smart job board, WP jobs plugin">
+<meta name="author" content="Vetri Suriya">
+<meta property="og:title" content="Smart Job Board — WordPress Plugin by Vetri Suriya">
+<meta property="og:description" content="A complete job board for WordPress. Post jobs, collect applications, live AJAX search, REST API.">
+<meta property="og:type" content="website">
+<title>Smart Job Board — WordPress Plugin | Vetri Suriya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black:   #0d0d0d;
+    --dark:    #1a1a1a;
+    --card:    #252525;
+    --border:  #333;
+    --yellow:  #f5d000;
+    --yellow-d:#c9a900;
+    --white:   #f0eee8;
+    --muted:   #888;
+    --accent:  #ff5f1f;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--black); color: var(--white); font-family: 'Barlow', sans-serif; font-size: 1.0625rem; line-height: 1.7; }
+
+  /* ── NAV ── */
+  nav { position: sticky; top: 0; z-index: 100; background: var(--black); border-bottom: 1px solid var(--border); padding: .875rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+  .nav-brand { font-family: 'Oswald', sans-serif; font-size: 1.125rem; font-weight: 700; color: var(--yellow); letter-spacing: .08em; text-transform: uppercase; text-decoration: none; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: .875rem; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; transition: color .2s; }
+  .nav-links a:hover { color: var(--yellow); }
+
+  /* ── HERO ── */
+  header { min-height: 92vh; display: flex; align-items: center; padding: 6rem 2rem 4rem; position: relative; overflow: hidden; }
+  header::before { content: 'JOBS'; position: absolute; right: -2rem; top: 50%; transform: translateY(-50%); font-family: 'Oswald', sans-serif; font-size: clamp(120px, 22vw, 280px); font-weight: 700; color: rgba(245,208,0,.04); pointer-events: none; white-space: nowrap; letter-spacing: -.02em; }
+  .hero-inner { max-width: 780px; }
+  .hero-tag { display: inline-block; background: var(--yellow); color: var(--black); font-family: 'Oswald', sans-serif; font-size: .75rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; padding: .35rem .875rem; margin-bottom: 1.5rem; }
+  h1 { font-family: 'Oswald', sans-serif; font-size: clamp(2.5rem, 7vw, 5.5rem); font-weight: 700; line-height: 1.0; letter-spacing: -.01em; text-transform: uppercase; margin-bottom: 1.5rem; }
+  h1 span { color: var(--yellow); }
+  .hero-sub { font-size: 1.125rem; font-weight: 300; color: var(--muted); max-width: 560px; margin-bottom: 2.5rem; line-height: 1.65; }
+  .btn-group { display: flex; flex-wrap: wrap; gap: .875rem; }
+  .btn { display: inline-flex; align-items: center; gap: .5rem; padding: .875rem 2rem; font-family: 'Oswald', sans-serif; font-size: .9375rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; text-decoration: none; border: none; cursor: pointer; transition: all .2s; }
+  .btn-primary { background: var(--yellow); color: var(--black); }
+  .btn-primary:hover { background: var(--yellow-d); transform: translateY(-2px); }
+  .btn-secondary { background: transparent; color: var(--white); border: 1px solid var(--border); }
+  .btn-secondary:hover { border-color: var(--yellow); color: var(--yellow); }
+  .btn-ghost { background: var(--card); color: var(--muted); }
+  .btn-ghost:hover { color: var(--white); }
+
+  /* ── STATS BAR ── */
+  .stats { background: var(--dark); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 2rem; display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; }
+  .stat { text-align: center; }
+  .stat-num { font-family: 'Oswald', sans-serif; font-size: 2rem; font-weight: 700; color: var(--yellow); }
+  .stat-label { font-size: .8125rem; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+
+  /* ── SECTIONS ── */
+  section { padding: 5rem 2rem; }
+  .container { max-width: 900px; margin: 0 auto; }
+  .section-tag { font-family: 'Oswald', sans-serif; font-size: .75rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--yellow); margin-bottom: .75rem; }
+  h2 { font-family: 'Oswald', sans-serif; font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight: 700; text-transform: uppercase; margin-bottom: 1.25rem; line-height: 1.1; }
+  h3 { font-family: 'Oswald', sans-serif; font-size: 1.25rem; font-weight: 600; color: var(--yellow); margin-bottom: .5rem; text-transform: uppercase; letter-spacing: .04em; }
+  p { color: rgba(240,238,232,.75); margin-bottom: 1rem; }
+
+  /* ── STEPS ── */
+  .steps { display: grid; gap: 1.25rem; margin-top: 2rem; }
+  .step { display: grid; grid-template-columns: 3rem 1fr; gap: 1.25rem; align-items: start; background: var(--card); border: 1px solid var(--border); padding: 1.5rem; }
+  .step-num { font-family: 'Oswald', sans-serif; font-size: 1.75rem; font-weight: 700; color: var(--yellow); line-height: 1; }
+  .step-body h3 { color: var(--white); font-size: 1rem; margin-bottom: .35rem; }
+  .step-body p { font-size: .9375rem; margin: 0; }
+
+  /* ── FEATURES ── */
+  .features { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1px; background: var(--border); margin-top: 2rem; }
+  .feature { background: var(--dark); padding: 1.5rem; }
+  .feature-icon { font-size: 1.5rem; margin-bottom: .75rem; }
+  .feature h3 { color: var(--white); font-size: .9375rem; letter-spacing: .02em; margin-bottom: .375rem; }
+  .feature p { font-size: .875rem; margin: 0; }
+
+  /* ── CODE ── */
+  .code-block { background: #0a0a0a; border: 1px solid var(--border); border-left: 3px solid var(--yellow); padding: 1.25rem 1.5rem; margin: 1rem 0; font-family: 'Courier New', monospace; font-size: .875rem; overflow-x: auto; line-height: 1.6; }
+  .code-block span.kw { color: var(--yellow); }
+  .code-block span.str { color: #9de06f; }
+  .code-block span.cm { color: var(--muted); font-style: italic; }
+
+  /* ── SHORTCODE TABLE ── */
+  table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: .9rem; }
+  thead { background: var(--yellow); color: var(--black); }
+  th { font-family: 'Oswald', sans-serif; font-weight: 600; padding: .75rem 1rem; text-align: left; letter-spacing: .04em; text-transform: uppercase; font-size: .8125rem; }
+  td { padding: .75rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:nth-child(even) td { background: var(--dark); }
+  code { background: #111; border: 1px solid var(--border); padding: 2px 6px; font-size: .8125rem; font-family: monospace; color: var(--yellow); }
+
+  /* ── SOCIAL ── */
+  .social-section { background: var(--dark); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .social-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+  .author-card { display: flex; align-items: center; gap: 1.5rem; }
+  .author-avatar { width: 80px; height: 80px; background: var(--yellow); display: flex; align-items: center; justify-content: center; font-family: 'Oswald', sans-serif; font-size: 2rem; font-weight: 700; color: var(--black); flex-shrink: 0; }
+  .author-name { font-family: 'Oswald', sans-serif; font-size: 1.5rem; font-weight: 700; }
+  .author-title { color: var(--muted); font-size: .875rem; }
+  .social-links { display: flex; flex-wrap: wrap; gap: .75rem; }
+  .social-link { display: inline-flex; align-items: center; gap: .5rem; padding: .6rem 1.25rem; background: var(--card); border: 1px solid var(--border); color: var(--white); text-decoration: none; font-size: .875rem; font-weight: 500; transition: all .2s; }
+  .social-link:hover { border-color: var(--yellow); color: var(--yellow); }
+
+  /* ── FOOTER ── */
+  footer { background: var(--dark); border-top: 1px solid var(--border); padding: 2.5rem 2rem; text-align: center; }
+  .footer-brand { font-family: 'Oswald', sans-serif; font-size: 1.125rem; font-weight: 700; color: var(--yellow); letter-spacing: .08em; text-transform: uppercase; margin-bottom: .5rem; }
+  .footer-copy { color: var(--muted); font-size: .8125rem; }
+  .footer-copy a { color: var(--yellow); text-decoration: none; }
+
+  @media (max-width: 680px) { .social-grid { grid-template-columns: 1fr; } .nav-links { display: none; } }
+</style>
+</head>
+<body>
+
+<nav aria-label="Site navigation">
+  <a href="#" class="nav-brand">Smart Job Board</a>
+  <ul class="nav-links">
+    <li><a href="#install">Install</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#shortcodes">Shortcodes</a></li>
+    <li><a href="#author">Author</a></li>
+  </ul>
+</nav>
+
+<header role="banner">
+  <div class="hero-inner">
+    <div class="hero-tag">WordPress Plugin · v1.0.0</div>
+    <h1>Smart<br><span>Job Board</span></h1>
+    <p class="hero-sub">A complete recruitment system for WordPress. Post jobs, collect applications with duplicate detection, live AJAX search, sidebar widget, REST API, and an applicants management dashboard — zero external services.</p>
+    <div class="btn-group">
+      <a href="smart-job-board.zip" class="btn btn-primary" download aria-label="Download Smart Job Board plugin ZIP">⬇ Download ZIP</a>
+      <a href="#author" class="btn btn-secondary">👤 Author Profile</a>
+      <a href="https://vetrisuriya.in/" class="btn btn-ghost" target="_blank" rel="noopener">🗂 View Portfolio</a>
+    </div>
+  </div>
+</header>
+
+<div class="stats" role="complementary" aria-label="Plugin statistics">
+  <div class="stat"><div class="stat-num">10+</div><div class="stat-label">PHP Classes</div></div>
+  <div class="stat"><div class="stat-num">1</div><div class="stat-label">Shortcode</div></div>
+  <div class="stat"><div class="stat-num">3</div><div class="stat-label">REST Endpoints</div></div>
+  <div class="stat"><div class="stat-num">GPL v2</div><div class="stat-label">License</div></div>
+</div>
+
+<main>
+  <section id="install" aria-labelledby="install-heading">
+    <div class="container">
+      <div class="section-tag">Getting Started</div>
+      <h2 id="install-heading">Installation &amp; Activation</h2>
+      <p>Follow these four steps to get the Smart Job Board running on your WordPress site in under five minutes.</p>
+      <div class="steps">
+        <article class="step">
+          <div class="step-num">01</div>
+          <div class="step-body"><h3>Upload the Plugin</h3><p>In your WordPress admin go to <strong>Plugins → Add New → Upload Plugin</strong>. Select the downloaded <code>smart-job-board.zip</code> file and click <strong>Install Now</strong>.</p></div>
+        </article>
+        <article class="step">
+          <div class="step-num">02</div>
+          <div class="step-body"><h3>Activate</h3><p>Click <strong>Activate Plugin</strong>. The plugin creates the <code>wp_sjb_applications</code> database table and adds job management capabilities to the Administrator and Editor roles.</p></div>
+        </article>
+        <article class="step">
+          <div class="step-num">03</div>
+          <div class="step-body"><h3>Configure Settings</h3><p>Go to <strong>Smart Jobs → Settings</strong>. Set the Jobs Per Page, Notification Email, Currency Symbol, and enable or disable resume upload.</p></div>
+        </article>
+        <article class="step">
+          <div class="step-num">04</div>
+          <div class="step-body"><h3>Create Taxonomies &amp; Post Jobs</h3><p>Add Job Categories (e.g. Engineering, Design) and Job Locations (e.g. Remote, London) under the Smart Jobs menu. Then go to <strong>Smart Jobs → Add New Job</strong> to publish your first listing.</p></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" aria-labelledby="features-heading" style="background:var(--dark)">
+    <div class="container">
+      <div class="section-tag">What You Get</div>
+      <h2 id="features-heading">Plugin Features</h2>
+      <div class="features">
+        <div class="feature"><div class="feature-icon">🏢</div><h3>Job Listing CPT</h3><p>Dedicated <code>job_listing</code> post type with company, salary, deadline, job type, and experience meta fields.</p></div>
+        <div class="feature"><div class="feature-icon">🏷</div><h3>Categories &amp; Locations</h3><p>Hierarchical Job Categories and flat Job Locations taxonomies. Filter the shortcode by either or both.</p></div>
+        <div class="feature"><div class="feature-icon">🔍</div><h3>Live AJAX Search</h3><p>400ms debounced keyword search that filters the job grid without a page reload using <code>WP_Query</code>.</p></div>
+        <div class="feature"><div class="feature-icon">📬</div><h3>Application System</h3><p>Custom DB table stores name, email, phone, cover letter. Duplicate detection by email + job pair.</p></div>
+        <div class="feature"><div class="feature-icon">⭐</div><h3>Featured Jobs Widget</h3><p>Sidebar widget showing featured jobs with 10-minute transient caching. Cache busts when settings change.</p></div>
+        <div class="feature"><div class="feature-icon">🔌</div><h3>REST API</h3><p>Three public endpoints: list jobs, single job with full content, and submit application programmatically.</p></div>
+        <div class="feature"><div class="feature-icon">👥</div><h3>Applicants Dashboard</h3><p>Admin page with status filter tabs (Pending / Reviewed / Shortlisted / Rejected) and inline AJAX status updates.</p></div>
+        <div class="feature"><div class="feature-icon">⚡</div><h3>Transient Cache</h3><p>Shortcode output cached for 10 minutes. Cache is automatically cleared on every job save event.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="shortcodes" aria-labelledby="shortcodes-heading">
+    <div class="container">
+      <div class="section-tag">Developer Reference</div>
+      <h2 id="shortcodes-heading">Shortcode &amp; Usage</h2>
+
+      <h3>Basic Shortcode</h3>
+      <p>Place this on any page to render the job board with search bar and all published jobs.</p>
+      <div class="code-block"><span class="kw">[smart_job_board]</span></div>
+
+      <h3>Filtered Shortcode</h3>
+      <div class="code-block"><span class="kw">[smart_job_board</span> <span class="str">category="engineering"</span> <span class="str">location="remote"</span> <span class="str">per_page="6"</span> <span class="str">featured="yes"</span> <span class="str">type="full-time"</span><span class="kw">]</span></div>
+
+      <table aria-label="Shortcode attributes reference">
+        <thead><tr><th>Attribute</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>category</code></td><td>all</td><td>Job Category slug to filter by. Get slug from Smart Jobs → Job Categories.</td></tr>
+          <tr><td><code>location</code></td><td>all</td><td>Job Location slug to filter (e.g. <code>remote</code>, <code>london</code>).</td></tr>
+          <tr><td><code>type</code></td><td>all</td><td>Job type: <code>full-time</code>, <code>part-time</code>, <code>remote</code>, <code>contract</code>, <code>internship</code>.</td></tr>
+          <tr><td><code>per_page</code></td><td>Settings value</td><td>Max jobs to display. Overrides the Settings default.</td></tr>
+          <tr><td><code>featured</code></td><td><code>no</code></td><td>Set to <code>yes</code> to show only ⭐ Featured jobs.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Application Form HTML</h3>
+      <p>Add this HTML to your single job page or a dedicated apply page. Replace <code>YOUR_JOB_ID</code> with the post ID found in the URL when editing the job.</p>
+      <div class="code-block">
+&lt;form id=<span class="str">"sjb-application-form"</span>&gt;<br>
+  &lt;input type=<span class="str">"hidden"</span> name=<span class="str">"job_id"</span> value=<span class="str">"YOUR_JOB_ID"</span>&gt;<br>
+  &lt;input type=<span class="str">"text"</span>  name=<span class="str">"name"</span>  required placeholder=<span class="str">"Full Name"</span>&gt;<br>
+  &lt;input type=<span class="str">"email"</span> name=<span class="str">"email"</span> required placeholder=<span class="str">"Email Address"</span>&gt;<br>
+  &lt;textarea name=<span class="str">"cover_letter"</span>&gt;&lt;/textarea&gt;<br>
+  &lt;button type=<span class="str">"submit"</span> class=<span class="str">"sjb-submit-btn"</span>&gt;Apply Now&lt;/button&gt;<br>
+&lt;/form&gt;
+      </div>
+
+      <h3>REST API Endpoints</h3>
+      <table aria-label="REST API endpoints">
+        <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>GET</code></td><td><code>/wp-json/smart-job-board/v1/jobs</code></td><td>List published jobs. Params: <code>category</code>, <code>location</code>, <code>per_page</code>, <code>page</code>.</td></tr>
+          <tr><td><code>GET</code></td><td><code>/wp-json/smart-job-board/v1/jobs/{id}</code></td><td>Single job with full content. Returns 404 if not found.</td></tr>
+          <tr><td><code>POST</code></td><td><code>/wp-json/smart-job-board/v1/applications</code></td><td>Submit application. Requires <code>job_id</code>, <code>name</code>, <code>email</code>.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="author" class="social-section" aria-labelledby="author-heading">
+    <div class="container">
+      <div class="section-tag">The Developer</div>
+      <h2 id="author-heading">Author Profile</h2>
+      <div class="social-grid">
+        <div>
+          <div class="author-card">
+            <div class="author-avatar" aria-hidden="true">VS</div>
+            <div>
+              <div class="author-name">Vetri Suriya</div>
+              <div class="author-title">PHP · WordPress · AWS</div>
+            </div>
+          </div>
+          <p style="margin-top:1.25rem;">Full-stack WordPress developer specialising in custom plugins, theme development, REST APIs, and cloud deployments on AWS. Building developer tools and open-source solutions for the WordPress ecosystem.</p>
+        </div>
+        <div>
+          <div class="social-links">
+            <a href="https://github.com/vetrisuriya" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile">⚙ GitHub</a>
+            <a href="https://linkedin.com/in/vetrisuriya" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">💼 LinkedIn</a>
+            <a href="https://vetrisuriya.in/" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="Portfolio website">🌐 Portfolio</a>
+            <a href="https://github.com/vetrisuriya/wp-plugins" class="social-link" aria-label="View more WordPress plugins">🔌 More Plugins</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer role="contentinfo">
+  <div class="footer-brand">Smart Job Board</div>
+  <p class="footer-copy">Designed and developed by <a href="https://vetrisuriya.in/" target="_blank" rel="noopener noreferrer">Vetri Suriya</a> · Released under <a href="https://www.gnu.org/licenses/gpl-2.0.html" target="_blank" rel="noopener noreferrer">GPL v2</a> · WordPress Plugin v1.0.0</p>
+  <p class="footer-copy" style="margin-top:.5rem;">© 2026 Vetri Suriya. Built for the WordPress developer community.</p>
+</footer>
+
+</body>
+</html>

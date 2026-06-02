@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="WP Content Subscription Manager — Let readers subscribe to WordPress post categories and receive automatic weekly email digests with double opt-in, WP-Cron, REST API, and batch sending.">
+<meta name="keywords" content="WordPress newsletter plugin, email subscription plugin, WP digest plugin, WordPress subscriber manager, category subscription WordPress">
+<meta name="author" content="Vetri Suriya">
+<meta property="og:title" content="WP Content Subscription Manager — WordPress Plugin by Vetri Suriya">
+<meta property="og:type" content="website">
+<title>WP Content Subscription Manager — WordPress Plugin | Vetri Suriya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest:  #1a3a2a;
+    --moss:    #2d5a40;
+    --lime:    #8fc43b;
+    --lime-l:  #f0f8e8;
+    --cream:   #fafaf5;
+    --ink:     #1c2419;
+    --ink-60:  #4a5e44;
+    --border:  #c8dfc2;
+    --white:   #ffffff;
+    --gold:    #c8950a;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--cream); color: var(--ink); font-family: 'Work Sans', sans-serif; font-size: 1rem; line-height: 1.75; }
+
+  /* ── NAV ── */
+  nav { background: var(--forest); padding: 1rem 2.5rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .nav-brand { font-family: 'Fraunces', serif; color: var(--lime); font-weight: 700; font-size: 1.0625rem; text-decoration: none; letter-spacing: -.01em; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: rgba(255,255,255,.55); font-size: .875rem; font-weight: 500; text-decoration: none; transition: color .2s; }
+  .nav-links a:hover { color: var(--lime); }
+
+  /* ── HERO ── */
+  header { background: var(--forest); padding: 6rem 2.5rem 5rem; position: relative; overflow: hidden; }
+  header::before { content: ''; position: absolute; top: -120px; right: -120px; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(143,196,59,.12) 0%, transparent 70%); pointer-events: none; }
+  .hero-wrap { max-width: 850px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero-label { display: inline-flex; align-items: center; gap: .5rem; background: var(--lime); color: var(--forest); font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: .35rem 1rem; border-radius: 2px; margin-bottom: 1.75rem; }
+  h1 { font-family: 'Fraunces', serif; font-size: clamp(2.25rem, 6.5vw, 5rem); font-weight: 800; line-height: 1.05; color: #fff; margin-bottom: 1.25rem; }
+  h1 .accent { color: var(--lime); }
+  .hero-p { font-size: 1.125rem; font-weight: 300; color: rgba(255,255,255,.65); max-width: 580px; margin-bottom: 2.5rem; line-height: 1.7; }
+  .cta-row { display: flex; flex-wrap: wrap; gap: .875rem; }
+  .btn { display: inline-flex; align-items: center; gap: .5rem; padding: .875rem 2rem; font-family: 'Work Sans', sans-serif; font-weight: 600; font-size: .9375rem; text-decoration: none; cursor: pointer; border: none; transition: all .2s; border-radius: 4px; }
+  .btn-lime { background: var(--lime); color: var(--forest); }
+  .btn-lime:hover { background: #7aad2e; transform: translateY(-2px); }
+  .btn-ring { background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,.3); }
+  .btn-ring:hover { border-color: var(--lime); color: var(--lime); }
+  .btn-dim { background: rgba(255,255,255,.07); color: rgba(255,255,255,.6); }
+  .btn-dim:hover { background: rgba(255,255,255,.12); color: #fff; }
+
+  /* ── WAVE DIVIDER ── */
+  .wave { display: block; line-height: 0; }
+  .wave svg { width: 100%; }
+
+  /* ── SECTIONS ── */
+  section { padding: 5rem 2.5rem; }
+  .wrap { max-width: 900px; margin: 0 auto; }
+  .tag { font-family: 'Work Sans', sans-serif; font-size: .75rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--moss); margin-bottom: .625rem; display: flex; align-items: center; gap: .375rem; }
+  .tag::before { content: ''; display: block; width: 20px; height: 2px; background: var(--lime); }
+  h2 { font-family: 'Fraunces', serif; font-size: clamp(1.75rem, 4vw, 2.875rem); font-weight: 700; color: var(--ink); margin-bottom: 1rem; line-height: 1.2; }
+  h3 { font-family: 'Fraunces', serif; font-size: 1.125rem; font-weight: 600; color: var(--forest); margin-bottom: .5rem; }
+  p { color: var(--ink-60); }
+
+  /* ── HOW IT WORKS ── */
+  .flow { display: flex; flex-direction: column; gap: 0; margin-top: 2.5rem; }
+  .flow-step { display: grid; grid-template-columns: 60px 1fr; gap: 1.5rem; position: relative; padding-bottom: 2rem; }
+  .flow-step:not(:last-child)::before { content: ''; position: absolute; left: 29px; top: 48px; bottom: 0; width: 2px; background: var(--border); }
+  .flow-dot { width: 60px; height: 60px; border-radius: 50%; background: var(--lime-l); border: 2px solid var(--lime); display: flex; align-items: center; justify-content: center; font-family: 'Fraunces', serif; font-size: 1.25rem; font-weight: 700; color: var(--forest); flex-shrink: 0; }
+  .flow-body h3 { color: var(--ink); font-size: 1.0625rem; margin-bottom: .35rem; }
+  .flow-body p { font-size: .9375rem; margin: 0; }
+
+  /* ── FEATURE GRID ── */
+  .feat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; margin-top: 2rem; }
+  .feat { background: var(--white); border: 1px solid var(--border); border-top: 3px solid var(--lime); padding: 1.5rem; border-radius: 4px; }
+  .feat-em { font-size: 1.5rem; margin-bottom: .75rem; }
+  .feat h3 { color: var(--ink); font-size: .9375rem; margin-bottom: .375rem; }
+  .feat p { font-size: .875rem; margin: 0; }
+
+  /* ── CODE ── */
+  pre { background: var(--forest); color: #c8f0a8; padding: 1.25rem 1.5rem; border-radius: 6px; font-size: .875rem; line-height: 1.65; overflow-x: auto; margin: 1rem 0; font-family: 'Courier New', monospace; }
+  pre .kw { color: var(--lime); }
+  pre .val { color: #ffd98c; }
+  code { background: var(--lime-l); color: var(--moss); border: 1px solid var(--border); padding: 1px 6px; border-radius: 3px; font-size: .8125rem; }
+
+  /* ── TABLE ── */
+  .tbl-wrap { border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin: 1.25rem 0; }
+  table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+  thead { background: var(--forest); color: #fff; }
+  th { padding: .75rem 1rem; text-align: left; font-weight: 600; font-size: .8125rem; letter-spacing: .04em; }
+  td { padding: .75rem 1rem; border-bottom: 1px solid var(--border); color: var(--ink-60); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+
+  /* ── AUTHOR ── */
+  .author-wrap { display: grid; grid-template-columns: auto 1fr; gap: 2.5rem; align-items: start; }
+  .a-avatar { width: 88px; height: 88px; border-radius: 8px; background: var(--lime); display: flex; align-items: center; justify-content: center; font-family: 'Fraunces', serif; font-size: 2.25rem; font-weight: 800; color: var(--forest); flex-shrink: 0; }
+  .a-name { font-family: 'Fraunces', serif; font-size: 1.625rem; font-weight: 700; color: var(--ink); margin-bottom: .2rem; }
+  .a-role { color: var(--ink-60); font-size: .875rem; margin-bottom: .75rem; }
+  .s-row { display: flex; flex-wrap: wrap; gap: .625rem; margin-top: 1rem; }
+  .s-btn { display: inline-flex; align-items: center; gap: .4rem; padding: .5rem 1.125rem; background: var(--lime-l); color: var(--forest); text-decoration: none; font-weight: 600; font-size: .875rem; border-radius: 4px; border: 1px solid var(--border); transition: all .2s; }
+  .s-btn:hover { background: var(--lime); color: var(--forest); border-color: var(--lime); }
+
+  /* ── FOOTER ── */
+  footer { background: var(--forest); color: rgba(255,255,255,.45); padding: 2.5rem 2rem; text-align: center; }
+  .ft { font-family: 'Fraunces', serif; font-size: 1.125rem; font-weight: 700; color: var(--lime); margin-bottom: .5rem; }
+  footer a { color: var(--lime); text-decoration: none; }
+
+  @media (max-width: 640px) { .author-wrap { grid-template-columns: 1fr; } .nav-links { display: none; } }
+</style>
+</head>
+<body>
+
+<nav aria-label="Site navigation">
+  <a href="#" class="nav-brand">📧 WP Content Subscriptions</a>
+  <ul class="nav-links">
+    <li><a href="#install">Install</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#shortcodes">Shortcode</a></li>
+    <li><a href="#author">Author</a></li>
+  </ul>
+</nav>
+
+<header role="banner">
+  <div class="hero-wrap">
+    <div class="hero-label">📬 WordPress Plugin · v1.0.0</div>
+    <h1>WP Content<br><span class="accent">Subscription</span><br>Manager</h1>
+    <p class="hero-p">Let readers subscribe to your post categories and receive automatic email digests. Double opt-in, WP-Cron scheduling, batch sending, external RSS inclusion — built entirely on WordPress-native APIs.</p>
+    <div class="cta-row">
+      <a href="wp-content-subscriptions.zip" class="btn btn-lime" download>⬇ Download ZIP</a>
+      <a href="#author" class="btn btn-ring">👤 Author Profile</a>
+      <a href="https://vetrisuriya.in/" class="btn btn-dim">🗂 View Portfolio</a>
+    </div>
+  </div>
+</header>
+
+<div class="wave" aria-hidden="true">
+  <svg viewBox="0 0 1200 60" xmlns="http://www.w3.org/2000/svg"><path d="M0 60L50 50C100 40 200 20 300 15C400 10 500 20 600 25C700 30 800 30 900 25C1000 20 1100 10 1150 5L1200 0V0H0Z" fill="#1a3a2a"/></svg>
+</div>
+
+<main>
+  <section id="install" aria-labelledby="install-h">
+    <div class="wrap">
+      <div class="tag">Getting Started</div>
+      <h2 id="install-h">Installation &amp; Activation</h2>
+      <p>After activation, two database tables are created automatically and the WP-Cron digest job is scheduled.</p>
+
+      <div class="feat-grid" style="margin-top:1.5rem;">
+        <div class="feat"><div class="feat-em">📦</div><h3>Step 1 — Upload</h3><p>Plugins → Add New → Upload Plugin. Select <code>wp-content-subscriptions.zip</code>, click Install Now.</p></div>
+        <div class="feat"><div class="feat-em">⚡</div><h3>Step 2 — Activate</h3><p>Click Activate. Creates <code>wcsm_subscribers</code> and <code>wcsm_subscriptions</code> tables and schedules digest cron.</p></div>
+        <div class="feat"><div class="feat-em">⚙️</div><h3>Step 3 — Settings</h3><p>Go to <strong>Subscriptions → Settings</strong>. Set From Name, From Email, digest frequency (Daily/Weekly/Biweekly), and batch size.</p></div>
+        <div class="feat"><div class="feat-em">📝</div><h3>Step 4 — Add Form</h3><p>Add <code>[subscription_form]</code> to any page. Readers see category checkboxes and receive a double opt-in confirmation email.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how" style="background:var(--white)" aria-labelledby="how-h">
+    <div class="wrap">
+      <div class="tag">Subscriber Journey</div>
+      <h2 id="how-h">How It Works</h2>
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-dot">1</div>
+          <div class="flow-body"><h3>Visitor Fills the Form</h3><p>Enters email, optionally name, ticks the categories they want. Clicks Subscribe.</p></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot">2</div>
+          <div class="flow-body"><h3>Double Opt-In Email Sent</h3><p>A confirmation email with a unique <code>?wcsm_confirm=TOKEN</code> link is sent. Token expires in 24 hours.</p></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot">3</div>
+          <div class="flow-body"><h3>Subscriber Confirms</h3><p>Clicking the link sets their status from <strong>Pending</strong> to <strong>Active</strong>. They see a success message on the subscription page.</p></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot">4</div>
+          <div class="flow-body"><h3>Digest Emails Sent Automatically</h3><p>WP-Cron fires on your schedule. New posts are batched and emailed to all active subscribers.</p></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot">5</div>
+          <div class="flow-body"><h3>One-Click Unsubscribe</h3><p>Every digest email contains a unique <code>?wcsm_unsubscribe=TOKEN</code> link. No login required to opt out.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="shortcodes" aria-labelledby="shortcodes-h">
+    <div class="wrap">
+      <div class="tag">Developer Reference</div>
+      <h2 id="shortcodes-h">Shortcode &amp; Settings</h2>
+
+      <h3>Subscription Form</h3>
+      <p>Renders the email subscription form with category checkboxes, double opt-in flow, and status messages.</p>
+      <pre><span class="kw">[subscription_form]</span>
+<span class="kw">[subscription_form</span> <span class="val">title="Join Our Newsletter"</span> <span class="val">show_name="yes"</span> <span class="val">categories="3,5,12"</span><span class="kw">]</span></pre>
+
+      <div class="tbl-wrap">
+        <table aria-label="Shortcode attributes">
+          <thead><tr><th>Attribute</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>title</code></td><td>"Subscribe for Updates"</td><td>Heading shown above the form.</td></tr>
+            <tr><td><code>show_name</code></td><td><code>yes</code></td><td>Show or hide the optional name field. Use <code>no</code> for email-only.</td></tr>
+            <tr><td><code>categories</code></td><td>all non-empty</td><td>Comma-separated category IDs to show as checkbox options.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Settings Panel</h3>
+      <div class="tbl-wrap">
+        <table aria-label="Plugin settings">
+          <thead><tr><th>Setting</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><strong>From Name</strong></td><td>Site name</td><td>Sender name in all digest and confirmation emails.</td></tr>
+            <tr><td><strong>From Email</strong></td><td>Admin email</td><td>Must match your domain to avoid spam filters.</td></tr>
+            <tr><td><strong>Digest Frequency</strong></td><td>Weekly</td><td>Daily / Weekly / Every Two Weeks. Registers custom WP-Cron schedules.</td></tr>
+            <tr><td><strong>Batch Size</strong></td><td>50</td><td>Emails per cron run. Keep ≤100 on shared hosting to avoid timeouts.</td></tr>
+            <tr><td><strong>External RSS URL</strong></td><td>empty</td><td>Appends up to 5 items from this RSS feed to every digest email.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>REST API</h3>
+      <pre>GET  <span class="val">/wp-json/wcsm/v1/subscribers</span>   <span style="color:#888">?status=active&per_page=50</span>
+GET  <span class="val">/wp-json/wcsm/v1/stats</span>
+DEL  <span class="val">/wp-json/wcsm/v1/subscribers/{email}</span></pre>
+    </div>
+  </section>
+
+  <section id="author" style="background:var(--lime-l)" aria-labelledby="author-h">
+    <div class="wrap">
+      <div class="tag">The Developer</div>
+      <h2 id="author-h">Author Profile</h2>
+      <div class="author-wrap">
+        <div class="a-avatar" aria-hidden="true">VS</div>
+        <div>
+          <div class="a-name">Vetri Suriya</div>
+          <div class="a-role">PHP · WordPress · AWS</div>
+          <p>Building production-grade WordPress plugins and Laravel applications. Passionate about clean architecture, open-source tools, and making complex features simple for end users.</p>
+          <div class="s-row">
+            <a href="https://github.com/vetrisuriya" class="s-btn" target="_blank" rel="noopener">⚙ GitHub</a>
+            <a href="https://linkedin.com/in/vetrisuriya" class="s-btn" target="_blank" rel="noopener">💼 LinkedIn</a>
+            <a href="https://vetrisuriya.in/" class="s-btn" target="_blank" rel="noopener">🌐 Portfolio</a>
+            <a href="https://github.com/vetrisuriya/wp-plugins" class="s-btn">🔌 More Plugins</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer role="contentinfo">
+  <div class="ft">WP Content Subscription Manager</div>
+  <p>Designed &amp; developed by <a href="https://vetrisuriya.in/" target="_blank" rel="noopener">Vetri Suriya</a> · Released under <a href="https://www.gnu.org/licenses/gpl-2.0.html" target="_blank" rel="noopener">GPL v2</a> · v1.0.0</p>
+  <p style="margin-top:.375rem;">© 2026 Vetri Suriya. Built for the WordPress developer community.</p>
+</footer>
+
+</body>
+</html>

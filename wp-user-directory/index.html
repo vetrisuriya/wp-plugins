@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="WP User Directory Pro — Build a searchable employee or member directory in WordPress. Front-end profile editing, live AJAX search, REST API, and role-based filtering.">
+<meta name="keywords" content="WordPress user directory plugin, member directory plugin, staff directory WordPress, employee directory WP, user profile plugin WordPress">
+<meta name="author" content="Vetri Suriya">
+<meta property="og:title" content="WP User Directory Pro — WordPress Plugin by Vetri Suriya">
+<meta property="og:type" content="website">
+<title>WP User Directory Pro — WordPress Plugin | Vetri Suriya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal:      #0f7f7a;
+    --teal-d:    #085c58;
+    --teal-l:    #e6f7f6;
+    --teal-m:    #1aa8a1;
+    --mint:      #d4f5f3;
+    --slate:     #1e2a38;
+    --slate-m:   #2d3e52;
+    --white:     #ffffff;
+    --bg:        #f5fffe;
+    --ink:       #1a2730;
+    --ink-60:    #4a6274;
+    --border:    #c2e8e6;
+    --orange:    #f06940;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--ink); font-family: 'Nunito', sans-serif; font-size: 1rem; line-height: 1.7; }
+
+  /* ── NAV ── */
+  nav { background: var(--white); border-bottom: 2px solid var(--teal); padding: 1rem 2.5rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .nav-brand { font-family: 'Space Mono', monospace; font-weight: 700; color: var(--teal-d); font-size: 1rem; text-decoration: none; letter-spacing: -.02em; }
+  .nav-pill { display: inline-block; background: var(--teal-l); color: var(--teal-d); font-size: .6875rem; font-weight: 700; padding: 2px 8px; border-radius: 20px; margin-left: .5rem; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--ink-60); font-size: .875rem; font-weight: 600; text-decoration: none; transition: color .2s; }
+  .nav-links a:hover { color: var(--teal); }
+
+  /* ── HERO ── */
+  header { background: linear-gradient(135deg, var(--slate) 0%, var(--slate-m) 100%); padding: 6rem 2.5rem 5rem; position: relative; overflow: hidden; }
+  header::after { content: '{ }'; position: absolute; right: -1rem; bottom: -2rem; font-family: 'Space Mono', monospace; font-size: clamp(80px, 18vw, 220px); color: rgba(26,168,161,.06); font-weight: 700; pointer-events: none; white-space: nowrap; }
+  .hero-box { max-width: 840px; margin: 0 auto; position: relative; z-index: 1; }
+  .h-tag { display: inline-flex; align-items: center; gap: .5rem; background: rgba(26,168,161,.15); border: 1px solid rgba(26,168,161,.3); color: var(--teal-m); font-family: 'Space Mono', monospace; font-size: .75rem; padding: .375rem 1rem; border-radius: 4px; margin-bottom: 1.75rem; letter-spacing: .04em; }
+  h1 { font-family: 'Nunito', sans-serif; font-size: clamp(2.25rem, 6vw, 4.5rem); font-weight: 800; color: var(--white); line-height: 1.1; margin-bottom: 1.25rem; }
+  h1 mark { background: none; color: var(--teal-m); -webkit-text-decoration: underline 3px var(--teal-m); text-decoration: underline 3px var(--teal-m); }
+  .hero-copy { font-size: 1.0625rem; font-weight: 400; color: rgba(255,255,255,.6); max-width: 560px; margin-bottom: 2.5rem; line-height: 1.75; }
+  .cta-wrap { display: flex; flex-wrap: wrap; gap: .875rem; }
+  .btn { display: inline-flex; align-items: center; gap: .5rem; padding: .875rem 2rem; font-family: 'Nunito', sans-serif; font-weight: 700; font-size: .9375rem; text-decoration: none; cursor: pointer; border: none; transition: all .2s; border-radius: 6px; }
+  .btn-teal { background: var(--teal-m); color: var(--white); }
+  .btn-teal:hover { background: var(--teal); transform: translateY(-2px); }
+  .btn-wht { background: rgba(255,255,255,.1); color: rgba(255,255,255,.8); border: 1px solid rgba(255,255,255,.2); }
+  .btn-wht:hover { background: rgba(255,255,255,.18); color: var(--white); }
+  .btn-dim { background: rgba(255,255,255,.05); color: rgba(255,255,255,.4); }
+  .btn-dim:hover { color: rgba(255,255,255,.7); }
+
+  /* ── MEMBER CARD DEMO ── */
+  .demo-grid { display: flex; gap: .875rem; flex-wrap: wrap; margin: 2.5rem 0; }
+  .demo-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem; width: 160px; text-align: center; }
+  .demo-av { width: 52px; height: 52px; border-radius: 50%; margin: 0 auto .75rem; display: flex; align-items: center; justify-content: center; font-family: 'Space Mono', monospace; font-weight: 700; font-size: 1rem; }
+  .av1 { background: #d4f5f3; color: var(--teal-d); }
+  .av2 { background: #fde8e0; color: #8c3320; }
+  .av3 { background: #e8f0ff; color: #2d52a8; }
+  .demo-name { font-weight: 700; font-size: .875rem; color: var(--ink); }
+  .demo-dept { font-size: .75rem; color: var(--ink-60); }
+
+  /* ── SECTIONS ── */
+  section { padding: 5rem 2.5rem; }
+  .wrap { max-width: 900px; margin: 0 auto; }
+  .label { font-family: 'Space Mono', monospace; font-size: .75rem; color: var(--teal); letter-spacing: .08em; margin-bottom: .5rem; }
+  h2 { font-family: 'Nunito', sans-serif; font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight: 800; color: var(--ink); margin-bottom: 1rem; line-height: 1.15; }
+  h3 { font-family: 'Nunito', sans-serif; font-size: 1.0625rem; font-weight: 700; color: var(--teal-d); margin-bottom: .45rem; }
+  p { color: var(--ink-60); }
+
+  /* ── STEPS ── */
+  .steps { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin-top: 2rem; }
+  .step-card { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; }
+  .sc-num { font-family: 'Space Mono', monospace; font-size: 1.5rem; font-weight: 700; color: var(--teal-m); margin-bottom: .875rem; }
+  .step-card h3 { color: var(--ink); font-size: .9375rem; margin-bottom: .35rem; }
+  .step-card p { font-size: .875rem; margin: 0; }
+
+  /* ── FEAT GRID ── */
+  .feat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; margin-top: 2rem; }
+  .feat { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; }
+  .feat-em { font-size: 1.5rem; margin-bottom: .75rem; }
+  .feat h3 { color: var(--ink); font-size: .9375rem; margin-bottom: .35rem; }
+  .feat p { font-size: .875rem; margin: 0; }
+
+  /* ── CODE ── */
+  pre { background: var(--slate); color: #b3e8e6; padding: 1.25rem 1.5rem; border-radius: 8px; font-family: 'Space Mono', monospace; font-size: .8125rem; line-height: 1.65; overflow-x: auto; margin: 1rem 0; }
+  pre .kw { color: var(--teal-m); }
+  pre .val { color: #ffd68a; }
+  code { background: var(--teal-l); color: var(--teal-d); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; font-family: 'Space Mono', monospace; font-size: .8125rem; }
+
+  /* ── TABLE ── */
+  .tbl-w { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin: 1.25rem 0; }
+  table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+  thead { background: var(--teal-d); color: var(--white); }
+  th { padding: .75rem 1.125rem; text-align: left; font-weight: 700; font-size: .8125rem; letter-spacing: .04em; }
+  td { padding: .75rem 1.125rem; border-bottom: 1px solid var(--border); color: var(--ink-60); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+
+  /* ── AUTHOR ── */
+  .author-bg { background: var(--mint); border-top: 2px solid var(--teal-m); }
+  .au-lay { display: grid; grid-template-columns: auto 1fr; gap: 2.5rem; align-items: start; }
+  .av { width: 84px; height: 84px; border-radius: 12px; background: var(--teal); display: flex; align-items: center; justify-content: center; font-family: 'Space Mono', monospace; font-size: 1.75rem; font-weight: 700; color: var(--white); flex-shrink: 0; }
+  .au-name { font-family: 'Nunito', sans-serif; font-size: 1.625rem; font-weight: 800; color: var(--ink); margin-bottom: .2rem; }
+  .au-role { color: var(--ink-60); font-size: .875rem; font-weight: 600; margin-bottom: .75rem; }
+  .soc { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; }
+  .soc-l { display: inline-flex; align-items: center; gap: .4rem; padding: .55rem 1.125rem; background: var(--white); border: 1.5px solid var(--border); color: var(--ink-60); text-decoration: none; font-size: .875rem; font-weight: 600; border-radius: 6px; transition: all .2s; }
+  .soc-l:hover { border-color: var(--teal); color: var(--teal-d); }
+
+  /* ── FOOTER ── */
+  footer { background: var(--slate); padding: 2.5rem 2rem; text-align: center; }
+  .ft-b { font-family: 'Space Mono', monospace; font-size: 1rem; font-weight: 700; color: var(--teal-m); margin-bottom: .5rem; }
+  footer p { color: rgba(255,255,255,.4); font-size: .8125rem; }
+  footer a { color: var(--teal-m); text-decoration: none; }
+
+  @media (max-width: 640px) { .au-lay { grid-template-columns: 1fr; } .nav-links { display: none; } header { padding: 4rem 1.5rem 3.5rem; } }
+</style>
+</head>
+<body>
+
+<nav aria-label="Site navigation">
+  <a href="#" class="nav-brand">wpud_pro<span class="nav-pill">v1.0.0</span></a>
+  <ul class="nav-links">
+    <li><a href="#install">Install</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#shortcodes">Shortcodes</a></li>
+    <li><a href="#author">Author</a></li>
+  </ul>
+</nav>
+
+<header role="banner">
+  <div class="hero-box">
+    <div class="h-tag">👥 WordPress Plugin · v1.0.0 · GPL v2</div>
+    <h1>WP User<br><mark>Directory Pro</mark></h1>
+    <p class="hero-copy">Build a searchable staff, employee, or member directory in WordPress. Front-end profile editing, live AJAX search, role-based filtering, custom meta fields, and a REST API — zero third-party services.</p>
+    <div class="cta-wrap">
+      <a href="wp-user-directory.zip" class="btn btn-teal" download>⬇ Download ZIP</a>
+      <a href="#author" class="btn btn-wht">👤 Author Profile</a>
+      <a href="https://vetrisuriya.in/" class="btn btn-dim">🗂 Portfolio</a>
+    </div>
+    <div class="demo-grid" aria-label="Sample member cards">
+      <div class="demo-card"><div class="demo-av av1">JS</div><div class="demo-name">Jane S.</div><div class="demo-dept">Engineering</div></div>
+      <div class="demo-card"><div class="demo-av av2">MK</div><div class="demo-name">Mike K.</div><div class="demo-dept">Design</div></div>
+      <div class="demo-card"><div class="demo-av av3">AL</div><div class="demo-name">Amy L.</div><div class="demo-dept">Marketing</div></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="install" aria-labelledby="install-h">
+    <div class="wrap">
+      <div class="label">// Getting Started</div>
+      <h2 id="install-h">Installation &amp; Setup</h2>
+      <div class="steps">
+        <div class="step-card"><div class="sc-num">01</div><h3>Upload Plugin</h3><p>Plugins → Add New → Upload Plugin. Select <code>wp-user-directory.zip</code> and click Install Now.</p></div>
+        <div class="step-card"><div class="sc-num">02</div><h3>Activate</h3><p>Click Activate. Adds the <code>manage_user_directory</code> capability and registers a Department shadow taxonomy.</p></div>
+        <div class="step-card"><div class="sc-num">03</div><h3>Configure</h3><p>Go to <strong>Users → Directory Settings</strong>. Choose which user roles appear, set items per page, and toggle email visibility.</p></div>
+        <div class="step-card"><div class="sc-num">04</div><h3>Publish Directory</h3><p>Add <code>[user_directory]</code> to any page. Add <code>[edit_my_profile]</code> to the account page for self-service profiles.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" style="background:var(--white)" aria-labelledby="feat-h">
+    <div class="wrap">
+      <div class="label">// Core Capabilities</div>
+      <h2 id="feat-h">Plugin Features</h2>
+      <div class="feat-grid">
+        <div class="feat"><div class="feat-em">🔍</div><h3>Live AJAX Search</h3><p>Searches by name, department, skills, or location. 300ms debounce, no page reload.</p></div>
+        <div class="feat"><div class="feat-em">🧑‍💼</div><h3>6 Profile Meta Fields</h3><p>Phone, Department, Skills, LinkedIn URL, Location, and Public Bio — all stored as WP user meta.</p></div>
+        <div class="feat"><div class="feat-em">✏️</div><h3>Front-End Editing</h3><p><code>[edit_my_profile]</code> shortcode. Logged-in users update their own profile without wp-admin access.</p></div>
+        <div class="feat"><div class="feat-em">🎛</div><h3>Role Filtering</h3><p>Show only specific WordPress roles in the directory via the <code>role</code> shortcode attribute.</p></div>
+        <div class="feat"><div class="feat-em">🏢</div><h3>Department Taxonomy</h3><p>Shadow CPT taxonomy bridges the gap between WordPress users and taxonomy-based filtering.</p></div>
+        <div class="feat"><div class="feat-em">🔌</div><h3>REST API</h3><p>GET members and single member endpoints. Returns all public meta fields in the response.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="shortcodes" aria-labelledby="sc-h">
+    <div class="wrap">
+      <div class="label">// Developer Reference</div>
+      <h2 id="sc-h">Shortcodes &amp; REST API</h2>
+
+      <h3>Member Directory</h3>
+      <p>Renders the searchable member grid. Respects role and department filters.</p>
+      <pre><span class="kw">[user_directory]</span>
+<span class="kw">[user_directory</span> <span class="val">department="engineering"</span> <span class="val">per_page="12"</span> <span class="val">role="editor,author"</span> <span class="val">orderby="display_name"</span><span class="kw">]</span></pre>
+
+      <div class="tbl-w">
+        <table aria-label="user_directory attributes">
+          <thead><tr><th>Attribute</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>department</code></td><td>all</td><td>Department taxonomy slug to filter by.</td></tr>
+            <tr><td><code>per_page</code></td><td>Settings value</td><td>Members per page.</td></tr>
+            <tr><td><code>role</code></td><td>Settings value</td><td>Comma-separated WordPress role slugs (e.g. <code>editor,author</code>).</td></tr>
+            <tr><td><code>orderby</code></td><td><code>display_name</code></td><td>Sort by: <code>display_name</code>, <code>registered</code>, <code>user_email</code>.</td></tr>
+            <tr><td><code>order</code></td><td><code>ASC</code></td><td>Sort direction: <code>ASC</code> or <code>DESC</code>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Profile Edit Form</h3>
+      <pre><span class="kw">[edit_my_profile]</span></pre>
+      <p>Only visible to logged-in users. Guests see a login prompt. Users edit their own Phone, Department, Skills, LinkedIn, Location, and Bio.</p>
+
+      <h3>REST API</h3>
+      <pre>GET <span class="val">/wp-json/wpud/v1/members</span>       <span style="color:#6ab8b6">Public — returns active members</span>
+GET <span class="val">/wp-json/wpud/v1/members/{id}</span>   <span style="color:#6ab8b6">Single member with all meta fields</span></pre>
+    </div>
+  </section>
+
+  <section id="author" class="author-bg" aria-labelledby="author-h">
+    <div class="wrap">
+      <div class="label">// Developer</div>
+      <h2 id="author-h">Author Profile</h2>
+      <div class="au-lay">
+        <div class="av" aria-hidden="true">VS</div>
+        <div>
+          <div class="au-name">Vetri Suriya</div>
+          <div class="au-role">PHP · WordPress · AWS</div>
+          <p>Full-stack WordPress developer focused on plugin development, theme engineering, and AWS-hosted production stacks. Building open-source tools that make WordPress do more without external dependencies.</p>
+          <div class="soc">
+            <a href="https://github.com/vetrisuriya" class="soc-l" target="_blank" rel="noopener">⚙ GitHub</a>
+            <a href="https://linkedin.com/in/vetrisuriya" class="soc-l" target="_blank" rel="noopener">💼 LinkedIn</a>
+            <a href="https://vetrisuriya.in/" class="soc-l" target="_blank" rel="noopener">🌐 Portfolio</a>
+            <a href="https://github.com/vetrisuriya/wp-plugins" class="soc-l">🔌 More Plugins</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer role="contentinfo">
+  <div class="ft-b">WP_User_Directory_Pro</div>
+  <p>Designed &amp; developed by <a href="https://vetrisuriya.in/" target="_blank" rel="noopener">Vetri Suriya</a> · <a href="https://www.gnu.org/licenses/gpl-2.0.html" target="_blank" rel="noopener">GPL v2 License</a> · v1.0.0</p>
+  <p style="margin-top:.375rem;">© 2026 Vetri Suriya. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="WP Event Booking System — A complete WordPress event listing and seat booking plugin. AJAX booking form, seat management, email confirmations, REST API, and an admin bookings dashboard.">
+<meta name="keywords" content="WordPress event booking plugin, event ticket plugin, seat management WordPress, AJAX booking form, WP events plugin">
+<meta name="author" content="Vetri Suriya">
+<meta property="og:title" content="WP Event Booking System — WordPress Plugin by Vetri Suriya">
+<meta property="og:type" content="website">
+<title>WP Event Booking System — WordPress Plugin | Vetri Suriya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #100820;
+    --surface:  #1a0d30;
+    --card:     #221042;
+    --purple:   #7b2fff;
+    --purple-l: #9d5fff;
+    --yellow:   #f5e642;
+    --yellow-l: rgba(245,230,66,.12);
+    --white:    #f0ecff;
+    --muted:    #7d6fa0;
+    --border:   #2e1a50;
+    --pink:     #ff2d78;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--white); font-family: 'Barlow', sans-serif; font-size: 1rem; line-height: 1.7; }
+
+  /* ── NAV ── */
+  nav { background: rgba(16,8,32,.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); padding: .875rem 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .nav-brand { font-family: 'Bebas Neue', sans-serif; color: var(--yellow); font-size: 1.375rem; letter-spacing: .08em; text-decoration: none; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--muted); font-size: .875rem; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; text-decoration: none; transition: color .2s; }
+  .nav-links a:hover { color: var(--yellow); }
+
+  /* ── HERO ── */
+  header { min-height: 88vh; display: flex; align-items: center; padding: 5rem 2rem 4rem; position: relative; overflow: hidden; }
+  header::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 40%, rgba(123,47,255,.25) 0%, transparent 65%), radial-gradient(ellipse at 20% 80%, rgba(255,45,120,.12) 0%, transparent 55%); pointer-events: none; }
+  .hero-grid { max-width: 960px; margin: 0 auto; display: grid; grid-template-columns: 1fr auto; gap: 3rem; align-items: center; position: relative; z-index: 1; }
+  .ticket-art { width: 200px; height: 320px; background: var(--purple); border-radius: 12px 12px 0 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem; border: 1px solid var(--purple-l); position: relative; flex-shrink: 0; }
+  .ticket-art::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 40px; background: var(--bg); border-radius: 0 0 0 0; clip-path: polygon(0 0, 15% 100%, 30% 0, 45% 100%, 60% 0, 75% 100%, 90% 0, 100% 100%, 100% 0); }
+  .ticket-event { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: .06em; color: var(--yellow); text-align: center; line-height: 1.1; }
+  .ticket-date { margin-top: .75rem; font-size: .8125rem; color: rgba(240,236,255,.55); text-align: center; }
+  .ticket-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+  .hero-badge { display: inline-block; background: var(--yellow-l); border: 1px solid rgba(245,230,66,.35); color: var(--yellow); font-size: .75rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; padding: .35rem 1rem; border-radius: 20px; margin-bottom: 1.5rem; }
+  h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 8vw, 6rem); letter-spacing: .03em; line-height: 1.0; margin-bottom: 1.25rem; }
+  h1 .accent { color: var(--yellow); }
+  .hero-sub { font-size: 1.0625rem; font-weight: 300; color: rgba(240,236,255,.6); max-width: 520px; margin-bottom: 2.5rem; }
+  .cta { display: flex; flex-wrap: wrap; gap: .875rem; }
+  .btn { display: inline-flex; align-items: center; gap: .5rem; padding: .875rem 2rem; font-family: 'Barlow', sans-serif; font-weight: 600; font-size: .9375rem; text-decoration: none; cursor: pointer; border: none; transition: all .2s; letter-spacing: .02em; }
+  .btn-yellow { background: var(--yellow); color: var(--bg); border-radius: 4px; }
+  .btn-yellow:hover { background: #e0d020; transform: translateY(-2px); }
+  .btn-purple { background: var(--purple); color: var(--white); border-radius: 4px; }
+  .btn-purple:hover { background: var(--purple-l); }
+  .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); border-radius: 4px; }
+  .btn-ghost:hover { color: var(--white); border-color: var(--muted); }
+
+  /* ── STATS ── */
+  .stats-bar { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 2rem; display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; }
+  .stat-item { text-align: center; }
+  .stat-n { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: var(--yellow); letter-spacing: .04em; line-height: 1; }
+  .stat-l { font-size: .8125rem; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+
+  /* ── SECTIONS ── */
+  section { padding: 5rem 2rem; }
+  .wrap { max-width: 900px; margin: 0 auto; }
+  .eyebrow { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: .18em; color: var(--yellow); margin-bottom: .5rem; }
+  h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: .04em; margin-bottom: 1rem; line-height: 1.1; color: var(--white); }
+  h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.375rem; letter-spacing: .06em; color: var(--yellow); margin-bottom: .5rem; }
+  p { color: rgba(240,236,255,.65); }
+
+  /* ── STEPS ── */
+  .step-list { display: grid; gap: 1px; background: var(--border); margin-top: 2rem; border-radius: 8px; overflow: hidden; }
+  .step-item { background: var(--card); padding: 1.5rem 1.75rem; display: grid; grid-template-columns: 50px 1fr; gap: 1.25rem; align-items: start; }
+  .sn { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--purple-l); line-height: 1; }
+  .step-item p { font-size: .9375rem; margin: 0; }
+  .step-item strong { color: var(--white); }
+
+  /* ── FEATURE CARDS ── */
+  .feat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; margin-top: 2rem; }
+  .feat-card { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--purple); padding: 1.5rem; border-radius: 4px; }
+  .fc-icon { font-size: 1.375rem; margin-bottom: .75rem; }
+  .feat-card h3 { color: var(--white); font-family: 'Barlow', sans-serif; font-size: 1rem; font-weight: 600; letter-spacing: .01em; margin-bottom: .375rem; }
+  .feat-card p { font-size: .875rem; margin: 0; }
+
+  /* ── CODE ── */
+  pre { background: #080414; border: 1px solid var(--border); border-left: 3px solid var(--purple); padding: 1.25rem 1.5rem; font-family: monospace; font-size: .875rem; line-height: 1.65; overflow-x: auto; margin: 1rem 0; color: #c4b5fd; }
+  pre .kw { color: var(--yellow); }
+  pre .val { color: #86efac; }
+  code { background: var(--yellow-l); color: var(--yellow); border: 1px solid rgba(245,230,66,.2); padding: 1px 6px; border-radius: 3px; font-size: .8125rem; }
+
+  /* ── TABLE ── */
+  table { width: 100%; border-collapse: collapse; font-size: .9rem; background: var(--card); border-radius: 6px; overflow: hidden; border: 1px solid var(--border); margin: 1rem 0; }
+  thead { background: var(--purple); color: #fff; }
+  th { padding: .75rem 1rem; text-align: left; font-family: 'Bebas Neue', sans-serif; font-size: .9375rem; letter-spacing: .08em; }
+  td { padding: .75rem 1rem; border-bottom: 1px solid var(--border); color: rgba(240,236,255,.65); vertical-align: top; }
+
+  /* ── AUTHOR ── */
+  .author-sec { background: var(--surface); border-top: 1px solid var(--border); }
+  .au-layout { display: grid; grid-template-columns: auto 1fr; gap: 2.5rem; align-items: start; }
+  .av { width: 84px; height: 84px; border-radius: 50%; background: linear-gradient(135deg, var(--purple), var(--pink)); display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: .06em; color: #fff; flex-shrink: 0; }
+  .au-name { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: .06em; color: var(--white); margin-bottom: .2rem; }
+  .au-role { color: var(--muted); font-size: .875rem; margin-bottom: .75rem; }
+  .soc { display: flex; flex-wrap: wrap; gap: .625rem; margin-top: 1rem; }
+  .soc-a { display: inline-flex; align-items: center; gap: .4rem; padding: .5rem 1.25rem; background: var(--card); border: 1px solid var(--border); color: rgba(240,236,255,.75); text-decoration: none; font-size: .875rem; border-radius: 4px; transition: all .2s; }
+  .soc-a:hover { border-color: var(--yellow); color: var(--yellow); }
+
+  /* ── FOOTER ── */
+  footer { background: #060310; border-top: 1px solid var(--border); padding: 2.5rem 2rem; text-align: center; color: var(--muted); }
+  .ft-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.375rem; letter-spacing: .08em; color: var(--yellow); margin-bottom: .5rem; }
+  footer a { color: var(--purple-l); text-decoration: none; }
+
+  @media (max-width: 700px) { .hero-grid { grid-template-columns: 1fr; } .ticket-art { display: none; } .au-layout { grid-template-columns: 1fr; } .nav-links { display: none; } }
+</style>
+</head>
+<body>
+
+<nav aria-label="Site navigation">
+  <a href="#" class="nav-brand">🎟 WP Event Booking</a>
+  <ul class="nav-links">
+    <li><a href="#install">Install</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#shortcodes">Shortcodes</a></li>
+    <li><a href="#author">Author</a></li>
+  </ul>
+</nav>
+
+<header role="banner">
+  <div class="hero-grid">
+    <div>
+      <div class="hero-badge">🎪 WordPress Plugin · v1.0.0</div>
+      <h1>WP Event<br><span class="accent">Booking</span><br>System</h1>
+      <p class="hero-sub">A complete event listing and seat booking system for WordPress. Display events in a card grid, accept bookings via AJAX, track seat availability in real time, and send confirmation emails — all without external ticketing platforms.</p>
+      <div class="cta">
+        <a href="wp-event-booking.zip" class="btn btn-yellow" download>⬇ Download ZIP</a>
+        <a href="#author" class="btn btn-purple">👤 Author Profile</a>
+        <a href="https://vetrisuriya.in/" class="btn btn-ghost">🗂 Portfolio</a>
+      </div>
+    </div>
+    <div class="ticket-art" aria-hidden="true">
+      <div class="ticket-icon">🎫</div>
+      <div class="ticket-event">YOUR EVENT HERE</div>
+      <div class="ticket-date">2026 · WordPress · Seats Available</div>
+    </div>
+  </div>
+</header>
+
+<div class="stats-bar" role="complementary">
+  <div class="stat-item"><div class="stat-n">2</div><div class="stat-l">Shortcodes</div></div>
+  <div class="stat-item"><div class="stat-n">2</div><div class="stat-l">REST Endpoints</div></div>
+  <div class="stat-item"><div class="stat-n">∞</div><div class="stat-l">Seat Tracking</div></div>
+  <div class="stat-item"><div class="stat-n">GPL v2</div><div class="stat-l">License</div></div>
+</div>
+
+<main>
+  <section id="install" aria-labelledby="install-h">
+    <div class="wrap">
+      <div class="eyebrow">Getting Started</div>
+      <h2 id="install-h">Install &amp; Activate</h2>
+      <div class="step-list">
+        <div class="step-item"><div class="sn">01</div><div><p><strong>Upload Plugin.</strong> Go to Plugins → Add New → Upload Plugin. Select <code>wp-event-booking.zip</code>, click Install Now.</p></div></div>
+        <div class="step-item"><div class="sn">02</div><div><p><strong>Activate.</strong> Click Activate Plugin. Creates <code>wp_wpeb_bookings</code> database table. Adds <code>manage_event_bookings</code> capability to Administrator and Editor.</p></div></div>
+        <div class="step-item"><div class="sn">03</div><div><p><strong>Configure.</strong> Go to <strong>Events → Settings</strong>. Set the Organiser Email and Max Seats Per Booking (default: 5).</p></div></div>
+        <div class="step-item"><div class="sn">04</div><div><p><strong>Create Events.</strong> Go to <strong>Events → Add New Event</strong>. Fill in Date, Time, Venue, Total Seats, Ticket Price, and assign Event Categories.</p></div></div>
+        <div class="step-item"><div class="sn">05</div><div><p><strong>Publish &amp; Embed.</strong> Add <code>[event_list]</code> to your Events page. Place <code>[event_booking event_id="42"]</code> on each individual event page using the post ID from the URL.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" style="background:var(--surface)" aria-labelledby="feat-h">
+    <div class="wrap">
+      <div class="eyebrow">Plugin Capabilities</div>
+      <h2 id="feat-h">Core Features</h2>
+      <div class="feat-grid">
+        <div class="feat-card"><div class="fc-icon">📅</div><h3>Events CPT</h3><p>Dedicated <code>wpeb_event</code> post type with Date, Time, Venue, Total Seats, Ticket Price, and Category taxonomy.</p></div>
+        <div class="feat-card"><div class="fc-icon">💺</div><h3>Real-Time Seat Tracking</h3><p>Available seats = Total Seats − Confirmed Bookings. Sold-out events show a sold-out message automatically.</p></div>
+        <div class="feat-card"><div class="fc-icon">⚡</div><h3>AJAX Booking Form</h3><p>No page reload. Validated client-side and server-side. Seat limit per booking enforced from settings.</p></div>
+        <div class="feat-card"><div class="fc-icon">📧</div><h3>Confirmation Emails</h3><p>Attendee receives booking details. Organiser gets a notification. Both via <code>wp_mail()</code>.</p></div>
+        <div class="feat-card"><div class="fc-icon">📋</div><h3>Admin Bookings Page</h3><p>Filter by status (Pending / Confirmed / Cancelled). One-click Confirm and Cancel buttons with AJAX updates.</p></div>
+        <div class="feat-card"><div class="fc-icon">🔌</div><h3>REST API</h3><p>Public endpoints to list upcoming events and get single event details including available seat count.</p></div>
+        <div class="feat-card"><div class="fc-icon">🏷</div><h3>Event Categories</h3><p>Hierarchical taxonomy. Filter the event list shortcode by category slug.</p></div>
+        <div class="feat-card"><div class="fc-icon">⏱</div><h3>Transient Cache</h3><p>Event list results cached for 1 hour. Cache automatically cleared when a booking is confirmed.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="shortcodes" aria-labelledby="sc-h">
+    <div class="wrap">
+      <div class="eyebrow">Developer Reference</div>
+      <h2 id="sc-h">Shortcodes &amp; REST API</h2>
+
+      <h3>Event List Grid</h3>
+      <p>Renders a responsive card grid of upcoming events sorted by date. Only events with a future date appear.</p>
+      <pre><span class="kw">[event_list]</span>
+<span class="kw">[event_list</span> <span class="val">category="workshop"</span> <span class="val">limit="6"</span><span class="kw">]</span></pre>
+
+      <table aria-label="event_list attributes">
+        <thead><tr><th>Attribute</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>category</code></td><td>all</td><td>Event Category slug to filter by.</td></tr>
+          <tr><td><code>limit</code></td><td><code>10</code></td><td>Maximum number of events to display.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Booking Form</h3>
+      <p>Renders the booking form for a specific event. Shows "Sold Out" when all confirmed seats are taken.</p>
+      <pre><span class="kw">[event_booking</span> <span class="val">event_id="42"</span><span class="kw">]</span></pre>
+
+      <table aria-label="event_booking attributes">
+        <thead><tr><th>Attribute</th><th>Required</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>event_id</code></td><td>Yes</td><td>WordPress post ID of the event. Found in the URL: <code>post=42</code>.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>REST API</h3>
+      <pre>GET <span class="val">/wp-json/wpeb/v1/events</span>          <span style="color:#666">?category=yoga&limit=10&page=1</span>
+GET <span class="val">/wp-json/wpeb/v1/events/{id}</span>      <span style="color:#666">Returns seats: total, booked, available</span></pre>
+    </div>
+  </section>
+
+  <section id="author" class="author-sec" aria-labelledby="author-h">
+    <div class="wrap">
+      <div class="eyebrow">The Developer</div>
+      <h2 id="author-h">Author Profile</h2>
+      <div class="au-layout">
+        <div class="av" aria-hidden="true">VS</div>
+        <div>
+          <div class="au-name">Vetri Suriya</div>
+          <div class="au-role">PHP · WordPress · AWS</div>
+          <p>Crafting WordPress plugins that solve real-world problems without external dependencies. Every plugin is built with WordPress-native APIs, proper capability checks, and production-ready code quality.</p>
+          <div class="soc">
+            <a href="https://github.com/vetrisuriya" class="soc-a" target="_blank" rel="noopener">⚙ GitHub</a>
+            <a href="https://linkedin.com/in/vetrisuriya" class="soc-a" target="_blank" rel="noopener">💼 LinkedIn</a>
+            <a href="https://vetrisuriya.in/" class="soc-a" target="_blank" rel="noopener">🌐 Portfolio</a>
+            <a href="https://github.com/vetrisuriya/wp-plugins" class="soc-a">🔌 More Plugins</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer role="contentinfo">
+  <div class="ft-name">WP Event Booking System</div>
+  <p>Designed &amp; developed by <a href="https://vetrisuriya.in/" target="_blank" rel="noopener">Vetri Suriya</a> · <a href="https://www.gnu.org/licenses/gpl-2.0.html" target="_blank" rel="noopener">GPL v2 License</a> · WordPress Plugin v1.0.0</p>
+  <p style="margin-top:.375rem;">© 2026 Vetri Suriya. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
